@@ -1,0 +1,72 @@
+﻿@page "/"
+@inject NavigationManager Nav
+
+<PageTitle>Home</PageTitle>
+
+@* TODO: Simplify CSS, add images, remove all plain text and add them as recources so the language can be changed easily *@
+<div class="container">
+    <div class="row p-2">
+        <div class="col-sm text-nowrap">
+            <div class="text-left" id="company">ER-Stock Management</div>
+        </div>
+        <div class="col-md d-flex d-inline align-self-center justify-content-md-end text-nowrap">
+            <div class="d-flex d-inline">
+                <img class="flags" src="finnish.png" alt="FI" />
+                <div>&emsp;</div>
+                <img class="flags" src="english.png" alt="EN" />
+                <div>&emsp;</div>
+                <img id="pagecolor" src="darkmode.png" alt="Light/Dark" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt-4">
+        <div class="col text-center">
+            @if (Stores.Empty())
+            {
+                <div class="col text-center">No stores found. Add new one to continue.</div>
+            }
+            else
+            {
+                <div class="col text-center">Select Store to view its products.</div>
+            }
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+        @if (Stores != null)
+        {
+            @foreach (Store s in Stores)
+            {
+                <div class="col-auto py-3">
+                    <button type="button" class="stores btn-primary" value="@s.Id" @onclick=@(() => Nav.NavigateTo($"BrowseStore/{s.Id}"))>@s.Name</button>
+                </div>
+            }
+            <div class="col-auto py-3">
+                <button type="button" class="stores btn-secondary" @onclick=@(() => Nav.NavigateTo("AddStore"))>Add store</button>
+            </div>
+        }
+        <div class="col-auto py-3">
+            <button type="button" class="stores btn-info" @onclick=@(() => Nav.NavigateTo("UseLogs"))>View use logs</button>
+        </div>
+    </div>
+
+
+</div>
+
+
+@code
+{
+    List<Store> Stores = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GetBasicStoreData();
+    }
+
+    private async Task GetBasicStoreData()
+    {
+        // TODO: Get basic data for all stores (without products)
+    }
+}

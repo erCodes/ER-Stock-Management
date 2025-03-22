@@ -1,0 +1,26 @@
+﻿@page "/UseLogs"
+@inject NavigationManager Nav
+
+<h3>UseLogs: Work in progress</h3>
+<div class="col-auto py-3">
+    <button type="button" class="stores btn-primary" @onclick=@(() => Nav.NavigateTo("/"))>Main page</button>
+</div>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GetBasicStoreData();
+    }
+
+    private async Task GetBasicStoreData()
+    {
+        // TODO: Get basic data for all stores (without products)
+    }
+
+    private async Task GetLogData()
+    {
+        // TODO: Implement log data fetching
+    }
+}
