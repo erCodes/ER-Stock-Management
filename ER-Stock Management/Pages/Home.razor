@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject NavigationManager Nav
+@inject HttpClient Http
 
 <PageTitle>Home</PageTitle>
 
@@ -25,6 +26,10 @@
             @if (Stores.Empty())
             {
                 <div class="col text-center">No stores found. Add new one to continue.</div>
+                if (!string.IsNullOrWhiteSpace(ErrorMessage))
+                {
+                    <div class="col text-center">@ErrorMessage</div>
+                }
             }
             else
             {
@@ -57,8 +62,8 @@
 
 @code
 {
-    List<Store> Stores = new();
-
+    List<Store>? Stores = new();
+    string ErrorMessage = string.Empty;
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -67,6 +72,15 @@
 
     private async Task GetBasicStoreData()
     {
-        // TODO: Get basic data for all stores (without products)
+        var response = await Http.GetAsync("http://localhost:5032/AllBasicData");
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            ErrorMessage = $"{response.StatusCode}: Failed to get store info. Please try again later.";
+            return;
+        }
+
+        var result = await response.Content.ReadAsStringAsync();
+        var storesWithoutProducts = JsonSerializer.Deserialize<List<Store>>(result);
+        Stores = storesWithoutProducts;
     }
 }

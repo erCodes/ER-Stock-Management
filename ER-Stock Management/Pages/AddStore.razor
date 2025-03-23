@@ -1,5 +1,6 @@
 ﻿@page "/AddStore"
 @inject NavigationManager Nav
+@inject HttpClient Http
 
 <div class="row">
     <div class="col-6">
@@ -13,12 +14,12 @@
     </div>
 </div>
 
-<form>
+<EditForm Model="Model" OnSubmit="Create">
     <div class="row py-2">
         <div class="col-6">
             <div class="form-group">
                 <label for="StoreName">Store Name</label>
-                <input type="text" @bind-value="Name" class="form-control" id="StoreName" placeholder="Store Name" required>
+                <InputText type="text" @bind-value="Name" class="form-control" id="StoreName" placeholder="Store Name" required></InputText>
             </div>
         </div>
     </div>
@@ -26,7 +27,7 @@
         <div class="col-6">
             <div class="form-group">
                 <label for="City">City</label>
-                <input type="text" @bind-value="City" class="form-control" id="City" placeholder="City" required>
+                <InputText type="text" @bind-value="City" class="form-control" id="City" placeholder="City" required></InputText>
             </div>
         </div>
     </div>
@@ -34,7 +35,7 @@
         <div class="col-6">
             <div class="form-group">
                 <label for="Address">Address</label>
-                <input type="text" @bind-value="Address" class="form-control" id="Address" placeholder="Address">
+                <InputText type="text" @bind-value="Address" class="form-control" id="Address" placeholder="Address"></InputText>
             </div>
         </div>
     </div>
@@ -42,7 +43,7 @@
         <div class="col-6">
             <div class="form-group">
                 <label for="Supervisor">Supervisor</label>
-                <input type="text" @bind-value="Supervisor" class="form-control" id="Supervisor" placeholder="Supervisor">
+                <InputText type="text" @bind-value="Supervisor" class="form-control" id="Supervisor" placeholder="Supervisor"></InputText>
             </div>
         </div>
     </div>
@@ -50,7 +51,7 @@
         <div class="col-6">
             <div class="form-group">
                 <label for="Phone">Phone number</label>
-                <input type="text" @bind-value="Phone" class="form-control" id="Phone" placeholder="Phone">
+                <InputText type="text" @bind-value="Phone" class="form-control" id="Phone" placeholder="Phone"></InputText>
             </div>
         </div>
     </div>
@@ -58,44 +59,43 @@
         <div class="col-6">
             <div class="form-group">
                 <label for="Email">Email</label>
-                <input type="text" @bind-value="Email" class="form-control" id="Email" placeholder="Email">
+                <InputText type="text" @bind-value="Email" class="form-control" id="Email" placeholder="Email"></InputText>
             </div>
         </div>
     </div>
     <div class="row py-2">
         <div class="col-6">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" @onclick="async () => await Create()" class="btn btn-primary">Submit</button>
         </div>
     </div>
     <div class="row py-2">
         <div class="col-6">
-            <h4 @bind="Message"></h4>
+            <h4>@Message</h4>
         </div>
     </div>
-</form>
+</EditForm>
 
 
 @code {
-    public required string Name { get; set; }
-    public required string City { get; set; }
-    public string? Address { get; set; }
-    public string? Supervisor { get; set; }
-    public string? Phone { get; set; }
-    public string? Email { get; set; }
+    public Store? Model { get; set; }
+
+    protected override void OnInitialized() => Model ??= new();
+
+    public required string Name;
+    public required string City;
+    public required string Address;
+    public string? Supervisor;
+    public string? Phone;
+    public string? Email;
 
     public string Message = string.Empty;
 
     private async Task Create()
     {
         var store = new Store(Name, City, Address, Supervisor, Phone, Email);
-        await Send(store);
-    }
-
-    private async Task Send(Store store)
-    {
-        HttpClient Http = new();
-        var response = await Http.PostAsJsonAsync("", store);
-        if (response.IsSuccessStatusCode)
+        var response = await Http.PostAsJsonAsync("http://localhost:5032/NewStore", store);
+        //var result = await response.Content.ReadAsStringAsync();
+        if (response.StatusCode == HttpStatusCode.OK)
         {
             Message = "Store added Succesfully";
         }
@@ -103,5 +103,6 @@
         {
             Message = $"{response.StatusCode}: Failed to add new Store";
         }
+        this.StateHasChanged();
     }
 }

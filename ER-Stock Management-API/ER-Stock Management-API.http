@@ -1,0 +1,6 @@
+@ER_Stock_Management_API_HostAddress = http://localhost:5032
+
+GET {{ER_Stock_Management_API_HostAddress}}/ER-Stock-Management-API/
+Accept: application/json
+
+###
