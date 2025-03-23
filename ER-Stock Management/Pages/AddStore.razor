@@ -1,11 +1,107 @@
 ﻿@page "/AddStore"
 @inject NavigationManager Nav
 
-<h3>AddStore: Work in progress</h3>
-<div class="col-auto py-3">
-    <button type="button" class="stores btn-primary" @onclick=@(() => Nav.NavigateTo("/"))>Main page</button>
+<div class="row">
+    <div class="col-6">
+        <h3>Add new store</h3>
+        <button type="button" class="btn btn-secondary" @onclick=@(() => Nav.NavigateTo("/"))>Main page</button>
+    </div>
+    <div class="col-6 text-end d-inline-block">
+        <img class="flags p-2" src="finnish.png" alt="FI" />
+        <img class="flags p-2" src="english.png" alt="EN" />
+        <img class="p-2" id="pagecolor" src="darkmode.png" alt="Light/Dark" />
+    </div>
 </div>
 
-@code {
+<form>
+    <div class="row py-2">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="StoreName">Store Name</label>
+                <input type="text" @bind-value="Name" class="form-control" id="StoreName" placeholder="Store Name" required>
+            </div>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="City">City</label>
+                <input type="text" @bind-value="City" class="form-control" id="City" placeholder="City" required>
+            </div>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="Address">Address</label>
+                <input type="text" @bind-value="Address" class="form-control" id="Address" placeholder="Address">
+            </div>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="Supervisor">Supervisor</label>
+                <input type="text" @bind-value="Supervisor" class="form-control" id="Supervisor" placeholder="Supervisor">
+            </div>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="Phone">Phone number</label>
+                <input type="text" @bind-value="Phone" class="form-control" id="Phone" placeholder="Phone">
+            </div>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <input type="text" @bind-value="Email" class="form-control" id="Email" placeholder="Email">
+            </div>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-6">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-6">
+            <h4 @bind="Message"></h4>
+        </div>
+    </div>
+</form>
 
+
+@code {
+    public required string Name { get; set; }
+    public required string City { get; set; }
+    public string? Address { get; set; }
+    public string? Supervisor { get; set; }
+    public string? Phone { get; set; }
+    public string? Email { get; set; }
+
+    public string Message = string.Empty;
+
+    private async Task Create()
+    {
+        var store = new Store(Name, City, Address, Supervisor, Phone, Email);
+        await Send(store);
+    }
+
+    private async Task Send(Store store)
+    {
+        HttpClient Http = new();
+        var response = await Http.PostAsJsonAsync("", store);
+        if (response.IsSuccessStatusCode)
+        {
+            Message = "Store added Succesfully";
+        }
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to add new Store";
+        }
+    }
 }
