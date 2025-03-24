@@ -79,7 +79,7 @@
 @code {
     public Store? Model { get; set; }
 
-    protected override void OnInitialized() => Model ??= new();
+    protected override void OnInitialized() => Model ??= new(Name, City, Address, Supervisor, Phone, Email);
 
     public required string Name;
     public required string City;
