@@ -15,5 +15,16 @@ namespace ER_Stock_Management_DataLibrary
         public string? Phone { get; set; } = phone;
         public string? Email { get; set; } = email;
         public List<Product>? Products { get; set; } = [];
+
+        public void CleanWhitespaces()
+        {
+            Id.TrimNullSafe();
+            Name.TrimNullSafe();
+            City.TrimNullSafe();
+            Address.TrimNullSafe();
+            Supervisor.TrimNullSafe();
+            Phone.TrimNullSafe();
+            Email.TrimNullSafe();
+        }
     }
 }

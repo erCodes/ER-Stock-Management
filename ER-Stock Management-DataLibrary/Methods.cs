@@ -22,5 +22,18 @@ namespace ER_Stock_Management_DataLibrary
 
             return false;
         }
-    }
+
+        public static string TrimNullSafe(this string? toCheck)
+        {
+            if (toCheck == null)
+            {
+                return string.Empty;
+            }
+
+            else
+            {
+                return toCheck.Trim();
+            }
+        }
+    } 
 }

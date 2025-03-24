@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,34 @@ namespace ER_Stock_Management_DataLibrary.LogDataObjects
 {
     public class StoreLogData
     {
+        [SetsRequiredMembers]
+        public StoreLogData(UserAction action, Store current, Store? updated = null)
+        {
+            if (updated != null)
+            {
+                if (current.Id != updated.Id)
+                {
+                    throw new ArgumentException("ID must be same on both entries");
+                }
+
+                NewName = updated.Name;
+                NewCity = updated.City;
+                NewAddress = updated.Address;
+                NewSupervisor = updated.Supervisor;
+                NewPhone = updated.Phone;
+                NewEmail = updated.Email;
+            }
+
+            Id = current.Id;
+            Action = action;
+            OldName = current.Name;
+            OldCity = current.City;
+            OldAddress = current.Address;
+            OldSupervisor = current.Supervisor;
+            OldPhone = current.Phone;
+            OldEmail = current.Email;
+        }
+
         public enum UserAction
         {
             Added,
