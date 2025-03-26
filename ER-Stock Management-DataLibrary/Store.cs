@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ER_Stock_Management_DataLibrary
@@ -7,7 +8,7 @@ namespace ER_Stock_Management_DataLibrary
     public class Store(string name, string city, string? address, string? supervisor, string? phone, string? email)
     {
         [Key]
-        public required string Id { get; set; } = Guid.NewGuid().ToString();
+        public string? Id { get; set; }
         public required string Name { get; set; } = name;
         public required string City { get; set; } = city;
         public string? Address { get; set; } = address;

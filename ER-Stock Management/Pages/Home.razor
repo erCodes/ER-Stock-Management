@@ -47,10 +47,14 @@
                     <button type="button" class="stores btn-primary" value="@s.Id" @onclick=@(() => Nav.NavigateTo($"BrowseStore/{s.Id}"))>@s.Name</button>
                 </div>
             }
-            <div class="col-auto py-3">
-                <button type="button" class="stores btn-secondary" @onclick=@(() => Nav.NavigateTo("AddStore"))>Add store</button>
-            </div>
         }
+
+        <div class="col-auto py-3">
+            <button type="button" class="stores btn-secondary" @onclick=@(() => Nav.NavigateTo("AddStore"))>Add store</button>
+        </div>
+        <div class="col-auto py-3">
+            <button type="button" class="stores btn-secondary" @onclick=@(() => Nav.NavigateTo("ProductCategories"))>Product Categories</button>
+        </div>
         <div class="col-auto py-3">
             <button type="button" class="stores btn-info" @onclick=@(() => Nav.NavigateTo("UseLogs"))>View use logs</button>
         </div>
@@ -73,14 +77,24 @@
     private async Task GetBasicStoreData()
     {
         var response = await Http.GetAsync("http://localhost:5032/AllBasicData");
-        if (response.StatusCode != HttpStatusCode.OK)
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var result = await response.Content.ReadAsStringAsync();
+            var storesWithoutProducts = JsonSerializer.Deserialize<List<Store>>(result);
+            Stores = storesWithoutProducts;
+            return;
+        }
+
+        else if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+            ErrorMessage = $"{response.StatusCode}: There are no stores. Please add new one to continue";
+            return;
+        }
+
+        else
         {
             ErrorMessage = $"{response.StatusCode}: Failed to get store info. Please try again later.";
             return;
         }
-
-        var result = await response.Content.ReadAsStringAsync();
-        var storesWithoutProducts = JsonSerializer.Deserialize<List<Store>>(result);
-        Stores = storesWithoutProducts;
     }
 }

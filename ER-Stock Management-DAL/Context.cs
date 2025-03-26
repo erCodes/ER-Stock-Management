@@ -16,5 +16,16 @@ namespace ER_Stock_Management_DAL
         {
             base.OnConfiguring(optionsBuilder);
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Store>()
+                .HasIndex(x => x.Id)
+                .IsUnique();
+
+            builder.Entity<Store>()
+                .HasIndex(x => x.Name)
+                .IsUnique();
+        }
     }
 }

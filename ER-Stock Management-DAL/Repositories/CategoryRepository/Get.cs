@@ -1,26 +1,26 @@
 ﻿using ER_Stock_Management_DataLibrary;
 using static ER_Stock_Management_DataLibrary.Result;
 
-namespace ER_Stock_Management_DAL.Repositories.StoreRepository
+namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
 {
     public interface IGet
     {
-        Result AllBasicData();
+        Result GetAllCategories();
     }
 
     public class Get(Context db) : IGet
     {
-        public Result AllBasicData()
+        public Result GetAllCategories()
         {
             try
             {
-                var stores = db.StoresAndProducts.ToList();
-                if (stores.Empty())
+                var categories = db.ProductCategories.ToList();
+                if (categories.Empty())
                 {
                     return new Result(Status.NoContent);
                 }
 
-                return new Result(Status.OK, stores);
+                return new Result(Status.OK, categories);
             }
 
             catch (Exception e)

@@ -6,12 +6,24 @@ using static ER_Stock_Management_DataLibrary.Result;
 namespace ER_Stock_Management_API.Controllers
 {
     [ApiController]
-    public class StoreController(IPost Post) : ControllerBase
+    public class StoreController(IGet Get, IPost Post) : ControllerBase
     {
         [HttpGet("/AllBasicData")]
         public IActionResult AllBasicData()
         {
-            return NotFound();
+            var result = Get.AllBasicData();
+            if (result.StatusCode == Status.OK)
+            {
+                return Ok(result.Data);
+            }
+            else if (result.StatusCode == Status.NoContent)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpPost("/NewStore")]

@@ -15,11 +15,6 @@ namespace ER_Stock_Management_DataLibrary.LogDataObjects
         {
             if (updated != null)
             {
-                if (current.Id != updated.Id)
-                {
-                    throw new ArgumentException("ID must be same on both entries");
-                }
-
                 NewName = updated.Name;
                 NewCity = updated.City;
                 NewAddress = updated.Address;

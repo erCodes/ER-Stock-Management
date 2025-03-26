@@ -94,7 +94,6 @@
     {
         var store = new Store(Name, City, Address, Supervisor, Phone, Email);
         var response = await Http.PostAsJsonAsync("http://localhost:5032/NewStore", store);
-        //var result = await response.Content.ReadAsStringAsync();
         if (response.StatusCode == HttpStatusCode.OK)
         {
             Message = "Store added Succesfully";

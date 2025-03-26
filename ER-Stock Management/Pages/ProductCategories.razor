@@ -1,0 +1,50 @@
+﻿@page "/ProductCategories"
+@inject NavigationManager Nav
+@inject HttpClient Http
+
+<div class="row">
+    <div class="col-6">
+        <h3>Product categories</h3>
+        <h4>Add, modify or delete product categories here</h4>
+        @if (Categories.Empty())
+        {
+            <h4>@ErrorMessage</h4>
+        }
+        <button type="button" class="btn btn-secondary" @onclick=@(() => Nav.NavigateTo("/"))>Main page</button>
+    </div>
+    <div class="col-6 text-end d-inline-block">
+        <img class="flags p-2" src="finnish.png" alt="FI" />
+        <img class="flags p-2" src="english.png" alt="EN" />
+        <img class="p-2" id="pagecolor" src="darkmode.png" alt="Light/Dark" />
+    </div>
+</div>
+
+@code {
+    List<ProductCategory>? Categories = new();
+    string ErrorMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync("http://localhost:5032/GetAllCategories");
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var result = await response.Content.ReadAsStringAsync();
+            var serverContent = JsonSerializer.Deserialize<List<ProductCategory>>(result);
+            Categories = serverContent;
+            return;
+        }
+
+        else if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+            ErrorMessage = $"{response.StatusCode}: There are no categories. Please add new one to continue";
+            return;
+        }
+
+        else
+        {
+            ErrorMessage = $"{response.StatusCode}: Failed to get categories. Please try again later.";
+            return;
+        }
+    }
+
+}
