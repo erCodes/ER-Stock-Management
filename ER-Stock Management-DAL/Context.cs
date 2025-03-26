@@ -26,6 +26,14 @@ namespace ER_Stock_Management_DAL
             builder.Entity<Store>()
                 .HasIndex(x => x.Name)
                 .IsUnique();
+
+            builder.Entity<ProductCategory>()
+                .HasIndex(x => x.Id)
+                .IsUnique();
+
+            builder.Entity<ProductCategory>()
+                .HasIndex(x => x.Name)
+                .IsUnique();
         }
     }
 }

@@ -19,8 +19,42 @@
     </div>
 </div>
 
+@if (!ModifiedCategories.Empty())
+{
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Category Name</th>
+                    <th scope="col">Modify category</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <InputText type="text" @bind-value="NewCategoryName" placeholder="New Category"></InputText>
+                    <button type="submit" @onclick="async () => await NewCategory(NewCategoryName)" class="btn btn-primary">Add New</button>
+                </tr>
+                @foreach (var c in ModifiedCategories)
+                {
+                    <tr>
+                        <td>@c.Original.Name</td>
+                        <InputText type="text" @bind-value="c.NewName" placeholder="@c.Original.Name"></InputText>
+                        <button type="submit" @onclick="async () => await Modify(c)" class="btn btn-primary">Submit</button>
+                        <input class="form-check-input" id="@c.Original.Id" type="checkbox" @bind="c.Delete">
+                        <button type="button" @onclick="async () => await Delete(c)" class="btn btn-danger">Delete</button>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
 @code {
-    List<ProductCategory>? Categories = new();
+    string NewCategoryName = string.Empty;
+    List<ProductCategory> Categories = new();
+    List<ModifiedProductCategory> ModifiedCategories = new(); 
     string ErrorMessage = string.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -30,7 +64,14 @@
         {
             var result = await response.Content.ReadAsStringAsync();
             var serverContent = JsonSerializer.Deserialize<List<ProductCategory>>(result);
+            if (serverContent == null) { return; }
+
             Categories = serverContent;
+            foreach (var c in Categories)
+            {
+                var newEntry = new ModifiedProductCategory(c);
+                ModifiedCategories.Add(newEntry);
+            }
             return;
         }
 
@@ -47,4 +88,37 @@
         }
     }
 
+    private async Task Modify(ModifiedProductCategory modified)
+    {
+        if (string.IsNullOrWhiteSpace(modified.NewName)) { return; }
+
+        var response = await Http.PutAsJsonAsync("uri", modified);
+    }
+
+    private async Task Delete(ModifiedProductCategory modified)
+    {
+        if (!modified.Delete) { return; }
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri("uri"),
+            Content = new StringContent(JsonSerializer.Serialize(modified.Original.Id))
+        };
+
+        var response = await Http.SendAsync(request);
+    }
+
+    private async Task NewCategory(string name)
+    {
+        var response = await Http.PostAsJsonAsync("http://localhost:5032/NewCategory", name);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            Nav.NavigateTo("/ProductCategories", true);
+        }
+        else
+        {
+            ErrorMessage = $"{response.StatusCode}: Failed to Add new category. Check if category exists already with a same name.";
+        }
+    }
 }
