@@ -6,7 +6,7 @@ using static ER_Stock_Management_DataLibrary.Result;
 namespace ER_Stock_Management_API.Controllers
 {
     [ApiController]
-    public class CategoryController(IGet Get, IPost Post) : ControllerBase
+    public class CategoryController(IGet Get, IPost Post, IPut Put, IDelete Delete) : ControllerBase
     {
         [HttpGet("/GetAllCategories")]
         public IActionResult GetAllCategories()
@@ -43,7 +43,37 @@ namespace ER_Stock_Management_API.Controllers
         [HttpPut("/ModifyCategory")]
         public IActionResult ModifyCategory(ModifiedProductCategory category)
         {
-            return NoContent();
+            var result = Put.ModifyCategory(category);
+            if (result.StatusCode == Status.OK)
+            {
+                return Ok();
+            }
+            else if (result.StatusCode == Status.BadRequest)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpDelete("/DeleteCategory")]
+        public IActionResult DeleteCategory(string id)
+        {
+            var result = Delete.DeleteCategory(id);
+            if (result.StatusCode == Status.OK)
+            {
+                return Ok();
+            }
+            else if (result.StatusCode == Status.NoContent)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return StatusCode(500);
+            }
         }
     }
 }

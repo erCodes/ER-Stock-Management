@@ -8,7 +8,7 @@
         <h4>Add, modify or delete product categories here</h4>
         @if (Categories.Empty())
         {
-            <h4>@ErrorMessage</h4>
+            <h4>@Message</h4>
         }
         <button type="button" class="btn btn-secondary" @onclick=@(() => Nav.NavigateTo("/"))>Main page</button>
     </div>
@@ -55,7 +55,7 @@
     string NewCategoryName = string.Empty;
     List<ProductCategory> Categories = new();
     List<ModifiedProductCategory> ModifiedCategories = new(); 
-    string ErrorMessage = string.Empty;
+    string Message = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -77,13 +77,13 @@
 
         else if (response.StatusCode == HttpStatusCode.NoContent)
         {
-            ErrorMessage = $"{response.StatusCode}: There are no categories. Please add new one to continue";
+            Message = $"{response.StatusCode}: There are no categories. Please add new one to continue";
             return;
         }
 
         else
         {
-            ErrorMessage = $"{response.StatusCode}: Failed to get categories. Please try again later.";
+            Message = $"{response.StatusCode}: Failed to get categories. Please try again later.";
             return;
         }
     }
@@ -92,7 +92,20 @@
     {
         if (string.IsNullOrWhiteSpace(modified.NewName)) { return; }
 
-        var response = await Http.PutAsJsonAsync("uri", modified);
+        var response = await Http.PutAsJsonAsync("http://localhost:5032/ModifyCategory", modified);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            Nav.NavigateTo("/ProductCategories", true);
+        }
+        else if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            Message = $"{response.StatusCode}: You tried to give category name that already exists. Change the name and try again";
+            return;
+        }
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to Add modify category.";
+        }
     }
 
     private async Task Delete(ModifiedProductCategory modified)
@@ -102,11 +115,23 @@
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Delete,
-            RequestUri = new Uri("uri"),
+            RequestUri = new Uri("http://localhost:5032//DeleteCategory"),
             Content = new StringContent(JsonSerializer.Serialize(modified.Original.Id))
         };
 
         var response = await Http.SendAsync(request);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            Nav.NavigateTo("/ProductCategories", true);
+        }
+        else if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+            
+        }
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to delete category.";
+        }
     }
 
     private async Task NewCategory(string name)
@@ -118,7 +143,7 @@
         }
         else
         {
-            ErrorMessage = $"{response.StatusCode}: Failed to Add new category. Check if category exists already with a same name.";
+            Message = $"{response.StatusCode}: Failed to Add new category. Check if category exists already with a same name.";
         }
     }
 }
