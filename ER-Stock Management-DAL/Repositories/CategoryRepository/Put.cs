@@ -30,7 +30,6 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
                 db.SaveChanges();
 
                 return new Result(Status.OK);
-                // Continue here, remember logs!!!
             }
 
             catch (Exception e)

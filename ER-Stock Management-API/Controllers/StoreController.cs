@@ -1,5 +1,6 @@
 using ER_Stock_Management_DAL.Repositories.StoreRepository;
 using ER_Stock_Management_DataLibrary;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using static ER_Stock_Management_DataLibrary.Result;
 
@@ -12,6 +13,24 @@ namespace ER_Stock_Management_API.Controllers
         public IActionResult AllBasicData()
         {
             var result = Get.AllBasicData();
+            if (result.StatusCode == Status.OK)
+            {
+                return Ok(result.Data);
+            }
+            else if (result.StatusCode == Status.NoContent)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet("/GetStoreDataWithId/{id}")]
+        public IActionResult GetStoreDataWithId(string id)
+        {
+            var result = Get.GetStoreDataWithId(id);
             if (result.StatusCode == Status.OK)
             {
                 return Ok(result.Data);

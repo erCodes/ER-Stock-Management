@@ -1,14 +1,51 @@
 ﻿@page "/BrowseStore/{id}"
 @inject NavigationManager Nav
+@inject HttpClient Http
 
 <h3>BrowseStore: Work in progress</h3>
 <div class="col-auto py-3">
-    <button type="button" class="stores btn-primary" @onclick=@(() => Nav.NavigateTo("/"))>Main page</button>
+    <button type="button" class="btn-primary" @onclick=@(() => Nav.NavigateTo("/"))>Main page</button>
 </div>
+
+@if (Store == null)
+{
+    <h4>@Message</h4>
+}
+else
+{
+    <h5>@Store.Name</h5>
+    <button type="button" class="btn-primary" @onclick=@(() => Nav.NavigateTo($"/ModifyStoreInfo/{Store.Id}/{Store.Name}/{Store.City}/{Store.Address}/{Store.Supervisor}/{Store.Phone}/{Store.Email}"))>Modify store info</button>
+    <div class="row py-2">
+        <div class="col">City:</div>
+        <div class="col">@Store.City</div>
+    </div>
+    <div class="row py-2">
+        <div class="col">Address:</div>
+        <div class="col">@Store.Address</div>
+    </div>
+    <div class="row py-2">
+        <div class="col">Supervisor:</div>
+        <div class="col">@Store.Supervisor</div>
+    </div>
+    <div class="row py-2">
+        <div class="col">Phone:</div>
+        <div class="col">@Store.Phone</div>
+    </div>
+    <div class="row py-2">
+        <div class="col">Email:</div>
+        <div class="col">@Store.Email</div>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+    </div>
+}
+
 
 @code {
     [Parameter]
     public required string id { get; set; }
+    private Store? Store = null;
+    private string Message = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -18,6 +55,20 @@
 
     private async Task GetStoreData(string id)
     {
-        // TODO: Get Products for specific store
+        var response = await Http.GetAsync($"http://localhost:5032/GetStoreDataWithId/{id}");
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var result = await response.Content.ReadAsStringAsync();
+            var serverContent = JsonSerializer.Deserialize<Store>(result);
+            Store = serverContent;
+        }
+        else if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+            Message = $"{response.StatusCode}: Store with id '{id}' does not exist. Please try again later";
+        }
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to get store with id '{id}'. Please try again later";
+        }
     }
 }
