@@ -1,4 +1,6 @@
 ﻿using ER_Stock_Management_DataLibrary;
+using ER_Stock_Management_DataLibrary.LogDataObjects;
+using static ER_Stock_Management_DataLibrary.LogDataObjects.ProductCategoryLogData;
 using static ER_Stock_Management_DataLibrary.Result;
 
 namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
@@ -34,6 +36,10 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
                 }
 
                 db.UpdateRange(productsWithCategoryId);
+
+                var logEntry = new ProductCategoryLogData(UserAction.Deleted, toRemove.Name);
+                db.CategoryLogs.Add(logEntry);
+
                 db.SaveChanges();
 
                 return new Result(Status.OK);

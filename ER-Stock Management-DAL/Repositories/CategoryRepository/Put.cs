@@ -1,4 +1,6 @@
 ﻿using ER_Stock_Management_DataLibrary;
+using ER_Stock_Management_DataLibrary.LogDataObjects;
+using static ER_Stock_Management_DataLibrary.LogDataObjects.ProductCategoryLogData;
 using static ER_Stock_Management_DataLibrary.Result;
 
 namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
@@ -21,6 +23,9 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
                 }
 
                 exists.Name = category.NewName;
+
+                var logEntry = new ProductCategoryLogData(UserAction.Modified, category.Original.Name, category.NewName);
+                db.CategoryLogs.Add(logEntry);
 
                 db.SaveChanges();
 
