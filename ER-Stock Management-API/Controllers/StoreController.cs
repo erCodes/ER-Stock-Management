@@ -7,7 +7,7 @@ using static ER_Stock_Management_DataLibrary.Result;
 namespace ER_Stock_Management_API.Controllers
 {
     [ApiController]
-    public class StoreController(IGet Get, IPost Post) : ControllerBase
+    public class StoreController(IGet Get, IPost Post, IPut Put, IDelete Delete) : ControllerBase
     {
         [HttpGet("/AllBasicData")]
         public IActionResult AllBasicData()
@@ -56,6 +56,42 @@ namespace ER_Stock_Management_API.Controllers
             else if (result.StatusCode == Status.BadRequest)
             {
                 return BadRequest();
+            }
+            else
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPut("/ModifyStore")]
+        public IActionResult ModifyStore(Store store)
+        {
+            var result = Put.ModifyStore(store);
+            if (result.StatusCode == Status.OK)
+            {
+                return Ok();
+            }
+            else if (result.StatusCode == Status.NoContent)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpDelete("/DeleteStore")]
+        public IActionResult DeleteStore(string id)
+        {
+            var result = Delete.DeleteStore(id);
+            if (result.StatusCode == Status.OK)
+            {
+                return Ok();
+            }
+            else if (result.StatusCode == Status.NoContent)
+            {
+                return NoContent();
             }
             else
             {

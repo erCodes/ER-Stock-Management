@@ -96,7 +96,21 @@
 
     private async Task Modify()
     {
-        return;
+        var modified = new Store(Id, Name, City, Address, Supervisor, Phone, Email);
+        var response = await Http.PutAsJsonAsync("http://localhost:5032/", modified);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            Nav.NavigateTo("/ProductCategories", true);
+        }
+        else if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            Message = $"{response.StatusCode}: You tried to give category name that already exists. Change the name and try again";
+            return;
+        }
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to Add modify category.";
+        }
     }
 
 }

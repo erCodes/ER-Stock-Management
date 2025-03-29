@@ -15,6 +15,16 @@ else
 {
     <h5>@Store.Name</h5>
     <button type="button" class="btn-primary" @onclick=@(() => Nav.NavigateTo($"/ModifyStoreInfo/{Store.Id}/{Store.Name}/{Store.City}/{Store.Address}/{Store.Supervisor}/{Store.Phone}/{Store.Email}"))>Modify store info</button>
+    <button type="button" class="btn-danger" @onclick=@(() => ShowWarning())>Delete store</button>
+    if (AreYouSure)
+    {
+        <div class="row py-2">
+            <div class="col">Deleting store will delete all products also. This action is permanent and cannot be undone.</div>
+            <div class="col">
+                <button type="button" class="btn-danger" @onclick=@(() => DeleteStore(Store.Id))>I am sure</button>
+            </div>
+        </div>
+    }
     <div class="row py-2">
         <div class="col">City:</div>
         <div class="col">@Store.City</div>
@@ -46,6 +56,7 @@ else
     public required string id { get; set; }
     private Store? Store = null;
     private string Message = string.Empty;
+    private bool AreYouSure = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,5 +81,35 @@ else
         {
             Message = $"{response.StatusCode}: Failed to get store with id '{id}'. Please try again later";
         }
+    }
+
+    private async Task DeleteStore(string id)
+    {
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri("http://localhost:5032/DeleteStore"),
+            Content = new StringContent(JsonSerializer.Serialize(Store.Id))
+        };
+
+        var response = await Http.SendAsync(request);
+
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            Nav.NavigateTo("/", true);
+        }
+        else if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+            Message = $"{response.StatusCode}";
+        }
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to delete Store.";
+        }
+    }
+
+    private void ShowWarning()
+    {
+        AreYouSure = true;
     }
 }

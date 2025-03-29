@@ -4,19 +4,42 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ER_Stock_Management_DataLibrary
 {
-    [method: SetsRequiredMembers]
-    public class Store(string name, string city, string? address, string? supervisor, string? phone, string? email)
+    public class Store
     {
         [Key]
         public string? Id { get; set; }
-        public required string Name { get; set; } = name;
-        public required string City { get; set; } = city;
-        public string? Address { get; set; } = address;
-        public string? Supervisor { get; set; } = supervisor;
-        public string? Phone { get; set; } = phone;
-        public string? Email { get; set; } = email;
+        public required string Name { get; set; }
+        public required string City { get; set; }
+        public string? Address { get; set; }
+        public string? Supervisor { get; set; }
+        public string? Phone { get; set; }
+        public string? Email { get; set; }
         public List<Product>? Products { get; set; } = [];
 
+        [SetsRequiredMembers]
+        public Store(string name, string city, string? address, string? supervisor, string? phone, string? email)
+        {
+            Name = name;
+            City = city;
+            Address = address;
+            Supervisor = supervisor;
+            Phone = phone;
+            Email = email;
+        }
+
+        [SetsRequiredMembers]
+        public Store(string? id, string name, string city, string? address, string? supervisor, string? phone, string? email)
+        {
+            Id = id;
+            Name = name;
+            City = city;
+            Address = address;
+            Supervisor = supervisor;
+            Phone = phone;
+            Email = email;
+        }
+
+        // Remove this
         public void CleanWhitespaces()
         {
             Id.TrimNullSafe();
