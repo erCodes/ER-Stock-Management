@@ -14,7 +14,7 @@ namespace ER_Stock_Management_DataLibrary
         public required string Name { get; set; }
         public required List<string> CategoryIds { get; set; }
         public required int InStock { get; set; }
-        public required DateTime QuantityChanged { get; set; }
+        public required DateTime Timestamp { get; set; }
 
         public Product()
         {

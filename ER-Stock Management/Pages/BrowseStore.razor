@@ -2,7 +2,7 @@
 @inject NavigationManager Nav
 @inject HttpClient Http
 
-<h3>BrowseStore: Work in progress</h3>
+<h3>BrowseStore: @Store.Name</h3>
 <div class="col-auto py-3">
     <button type="button" class="btn-primary" @onclick=@(() => Nav.NavigateTo("/"))>Main page</button>
 </div>
@@ -47,7 +47,7 @@ else
     </div>
 
     <div class="row d-flex justify-content-center">
-        <button type="button" class="btn-primary" @onclick=@(() => Nav.NavigateTo(""))>View products</button>
+        <button type="button" class="btn-primary" @onclick=@(() => Nav.NavigateTo($"ViewProducts/{Store}"))>View products</button>
     </div>
 }
 

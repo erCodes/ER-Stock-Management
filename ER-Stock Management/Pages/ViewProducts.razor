@@ -1,9 +1,100 @@
-﻿@page "/ViewProducts/{id}"
+﻿@page "/ViewProducts/{store}"
 @inject NavigationManager Nav
 @inject HttpClient Http
 
-<h3>ViewProducts</h3>
+<h3>BrowseStore: @Store.Name</h3>
+<div class="col-auto py-3">
+    <button type="button" class="btn-secondary" @onclick=@(() => Nav.NavigateTo($"BrowseStore/{Store.Id}", true))>Main page</button>
+</div>
+<div class="col-6 text-end d-inline-block">
+    <img class="flags p-2" src="finnish.png" alt="FI" />
+    <img class="flags p-2" src="english.png" alt="EN" />
+    <img class="p-2" id="pagecolor" src="darkmode.png" alt="Light/Dark" />
+</div>
+
+@if (Store != null && !Categories.Empty())
+{
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Products Name</th>
+                    <th scope="col">Amount in stock</th>
+                    <th scope="col">Categories</th>
+                    <th scope="col">Modified on (UTC)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @* Passataanko store tänne? *@
+                    <button type="button" class="btn-primary" @onclick=@(() => Nav.NavigateTo($"AddNewStore"))>Add New</button>
+                </tr>
+                @foreach (var product in Store.Products)
+                {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td>@product.InStock</td>
+                        <td>
+                            <select>
+                                @if (!product.CategoryIds.Empty())
+                                {
+                                    foreach (var id in product.CategoryIds)
+                                    {
+                                        string name = string.Empty;
+                                        var category = Categories.FirstOrDefault(x => x.Id == id);
+                                        if (category == null)
+                                        {
+                                            name = Default;
+                                        }
+                                        else
+                                        {
+                                            name = category.Name;
+                                        }
+
+                                        <option value="@name">@name</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>@product.Timestamp.ToLongTimeString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
 
 @code {
+    [Parameter]
+    public required Store Store { get; set; }
 
+    public required List<ProductCategory> Categories = [];
+    public string Message = string.Empty;
+    public readonly string Default = "*unknown*";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync("http://localhost:5032/GetAllCategories");
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var result = await response.Content.ReadAsStringAsync();
+            var serverContent = JsonSerializer.Deserialize<List<ProductCategory>>(result);
+            if (serverContent == null) { return; }
+            Categories = serverContent;
+        }
+
+        else if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+            Message = $"{response.StatusCode}: There are no categories. Please add new one to continue";
+            return;
+        }
+
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to get categories. Please try again later.";
+            return;
+        }
+    }
 }
