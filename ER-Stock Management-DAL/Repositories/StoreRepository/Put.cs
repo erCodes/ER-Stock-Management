@@ -1,6 +1,4 @@
 ﻿using ER_Stock_Management_DataLibrary;
-using ER_Stock_Management_DataLibrary.LogDataObjects;
-using static ER_Stock_Management_DataLibrary.LogDataObjects.StoreLogData;
 using static ER_Stock_Management_DataLibrary.Result;
 
 namespace ER_Stock_Management_DAL.Repositories.StoreRepository
@@ -24,9 +22,6 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
                 {
                     return new Result(Status.NoContent);
                 }
-
-                var logEntry = new StoreLogData(UserAction.Modified, exists, modified);
-                db.StoreLogs.Add(logEntry);
 
                 exists = modified;
                 db.StoresAndProducts.Update(exists);

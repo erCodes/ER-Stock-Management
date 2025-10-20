@@ -1,7 +1,5 @@
 ﻿using ER_Stock_Management_DataLibrary;
-using ER_Stock_Management_DataLibrary.LogDataObjects;
 using Microsoft.EntityFrameworkCore;
-using static ER_Stock_Management_DataLibrary.LogDataObjects.StoreLogData;
 using static ER_Stock_Management_DataLibrary.Result;
 
 namespace ER_Stock_Management_DAL.Repositories.StoreRepository
@@ -28,10 +26,6 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
                 }
 
                 db.StoresAndProducts.Remove(store);
-
-                var logEntry = new StoreLogData(UserAction.Deleted, store);
-                db.StoreLogs.Add(logEntry);
-
                 db.SaveChanges();
 
                 return new Result(Status.OK);
