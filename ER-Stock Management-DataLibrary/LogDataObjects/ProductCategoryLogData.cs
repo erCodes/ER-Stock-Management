@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ER_Stock_Management_DataLibrary.LogDataObjects
 {
+    // Kaikki lokit pois. Niitä ei tarvita.
     [method: SetsRequiredMembers]
     public class ProductCategoryLogData(ProductCategoryLogData.UserAction action, string oldName, string? newName = null)
     {

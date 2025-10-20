@@ -12,7 +12,7 @@
     <img class="p-2" id="pagecolor" src="darkmode.png" alt="Light/Dark" />
 </div>
 
-@if (Store != null && !Categories.Empty())
+@if (Store != null && Categories.Empty())
 {
     <div class="container">
         <table class="table table-bordered">
@@ -26,13 +26,15 @@
             </thead>
             <tbody>
                 <tr>
-                    @* Passataanko store tänne? *@
-                    <button type="button" class="btn-primary" @onclick=@(() => Nav.NavigateTo($"AddNewStore"))>Add New</button>
                 </tr>
-                @foreach (var product in Store.Products)
+                @foreach (var product in Store.Products ?? [])
                 {
                     <tr>
-                        <td>@product.Name</td>
+                        <td>
+                            @* Mitä parametreiksi??? *@
+                            <button type="button" class="btn-secondary" @onclick=@(() => Nav.NavigateTo($"ModifyProduct/{product}/{Store.Id}"))>Modify</button>
+                            @product.Name
+                        </td>
                         <td>@product.InStock</td>
                         <td>
                             <select>

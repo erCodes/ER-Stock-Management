@@ -10,6 +10,7 @@ namespace ER_Stock_Management_DataLibrary
     [method: SetsRequiredMembers]
     public class Result(Result.Status statusCode, object? data = null)
     {
+        // vAIHDA TÄHÄN http STATUS CODE OBJEKTI, EI ENUM.
         public enum Status
         {
             OK,

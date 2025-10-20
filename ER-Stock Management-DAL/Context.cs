@@ -20,20 +20,10 @@ namespace ER_Stock_Management_DAL
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Store>()
-                .HasIndex(x => x.Id)
-                .IsUnique();
-
-            builder.Entity<Store>()
-                .HasIndex(x => x.Name)
-                .IsUnique();
+                .HasAlternateKey(x => x.Name);
 
             builder.Entity<ProductCategory>()
-                .HasIndex(x => x.Id)
-                .IsUnique();
-
-            builder.Entity<ProductCategory>()
-                .HasIndex(x => x.Name)
-                .IsUnique();
+                .HasAlternateKey(x => x.Name);
         }
     }
 }
