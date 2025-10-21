@@ -8,13 +8,15 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
         Result ModifyStore(Store modified);
     }
 
-    public class Put(Context db) : IPut
+    public class Put : IPut
     {
+        Context Db = new();
+
         public Result ModifyStore(Store modified)
         {
             try
             {
-                var exists = db.StoresAndProducts
+                var exists = Db.StoresAndProducts
                     .Where(x => x.Id == modified.Id)
                     .FirstOrDefault();
 
@@ -24,9 +26,9 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
                 }
 
                 exists = modified;
-                db.StoresAndProducts.Update(exists);
+                Db.StoresAndProducts.Update(exists);
 
-                db.SaveChanges();
+                Db.SaveChanges();
 
                 return new Result(Status.OK);
             }

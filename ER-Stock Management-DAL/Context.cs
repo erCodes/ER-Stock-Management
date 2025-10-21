@@ -11,7 +11,8 @@ namespace ER_Stock_Management_DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=StockManagemenDb;Trusted_Connection=True;MultipleActiveResultSets=true");
+            base.OnConfiguring(optionsBuilder);
+            //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=StockManagemenDb;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

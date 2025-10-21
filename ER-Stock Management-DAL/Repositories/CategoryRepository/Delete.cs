@@ -8,21 +8,23 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
         Result DeleteCategory(string id);
     }
 
-    public class Delete(Context db) : IDelete
+    public class Delete : IDelete
     {
+        Context Db = new();
+
         public Result DeleteCategory(string id)
         {
             try
             {
-                var toRemove = db.ProductCategories.FirstOrDefault(x => x.Id == id);
+                var toRemove = Db.ProductCategories.FirstOrDefault(x => x.Id == id);
                 if (toRemove == null)
                 {
                     return new Result(Status.NoContent);
                 }
 
-                db.ProductCategories.Remove(toRemove);
+                Db.ProductCategories.Remove(toRemove);
 
-                var productsWithCategoryId = db.StoresAndProducts
+                var productsWithCategoryId = Db.StoresAndProducts
                     .SelectMany(x => x.Products
                     .Where(y => y.CategoryIds
                     .Contains(id)))
@@ -33,8 +35,8 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
                     prod.CategoryIds.Remove(id);
                 }
 
-                db.UpdateRange(productsWithCategoryId);
-                db.SaveChanges();
+                Db.UpdateRange(productsWithCategoryId);
+                Db.SaveChanges();
 
                 return new Result(Status.OK);
             }

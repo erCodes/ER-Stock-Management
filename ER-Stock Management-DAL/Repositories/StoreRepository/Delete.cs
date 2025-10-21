@@ -9,13 +9,15 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
         Result DeleteStore(string id);
     }
 
-    public class Delete(Context db) : IDelete
+    public class Delete : IDelete
     {
+        Context Db = new();
+
         public Result DeleteStore(string id)
         {
             try
             {
-                var store = db.StoresAndProducts
+                var store = Db.StoresAndProducts
                     .Where(x => x.Id == id)
                     .Include(y => y.Products)
                     .FirstOrDefault();
@@ -25,8 +27,8 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
                     return new Result(Status.NoContent);
                 }
 
-                db.StoresAndProducts.Remove(store);
-                db.SaveChanges();
+                Db.StoresAndProducts.Remove(store);
+                Db.SaveChanges();
 
                 return new Result(Status.OK);
             }

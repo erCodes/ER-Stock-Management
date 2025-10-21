@@ -1,6 +1,9 @@
-﻿using ER_Stock_Management_DataLibrary;
+﻿using ER_Stock_Management_DAL;
+using ER_Stock_Management_DataLibrary;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using static ER_Stock_Management_DataLibrary.Result;
+
 
 namespace ER_Stock_Management_DAL.Repositories.StoreRepository
 {
@@ -12,11 +15,13 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
 
     public class Get : IGet
     {
+        Context Db = new();
+
         public Result AllBasicData()
         {
             try
             {
-                var stores = db.StoresAndProducts.ToList();
+                var stores = Db.StoresAndProducts.ToList();
                 if (stores.Empty())
                 {
                     return new Result(Status.NoContent);
@@ -34,9 +39,9 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
 
         public Result GetStoreDataWithId(string id)
         {
-            try
-            {
-                var store = db.StoresAndProducts
+                try
+                {
+                var store = Db.StoresAndProducts
                     .Where(x => x.Id == id)
                     .Include(y => y.Products)
                     .FirstOrDefault();

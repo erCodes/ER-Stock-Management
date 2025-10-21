@@ -8,15 +8,17 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
         Result NewStore(Store store);
     }
 
-    public class Post(Context db) : IPost
+    public class Post : IPost
     {
+        Context Db = new();
+
         public Result NewStore(Store store)
         {
             try
             {
                 store.CleanWhitespaces();
                 store.Id = Guid.NewGuid().ToString();
-                var existsWithSameName = db.StoresAndProducts.Where(x => x.Name == store.Name)
+                var existsWithSameName = Db.StoresAndProducts.Where(x => x.Name == store.Name)
                     .FirstOrDefault();
 
                 if (existsWithSameName != null)
@@ -24,7 +26,7 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
                     return new Result(Status.BadRequest);
                 }
 
-                var existsWithSameId = db.StoresAndProducts.Where(x => x.Id == store.Id)
+                var existsWithSameId = Db.StoresAndProducts.Where(x => x.Id == store.Id)
                     .FirstOrDefault();
 
                 if (existsWithSameId != null)
@@ -32,8 +34,8 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
                     return new Result(Status.ServerError);
                 }
 
-                db.StoresAndProducts.Add(store);
-                db.SaveChanges();
+                Db.StoresAndProducts.Add(store);
+                Db.SaveChanges();
 
                 return new Result(Status.OK);
             }

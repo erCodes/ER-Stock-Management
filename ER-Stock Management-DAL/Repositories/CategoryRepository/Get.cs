@@ -8,13 +8,15 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
         Result GetAllCategories();
     }
 
-    public class Get(Context db) : IGet
+    public class Get : IGet
     {
+        Context Db = new();
+
         public Result GetAllCategories()
         {
             try
             {
-                var categories = db.ProductCategories.ToList();
+                var categories = Db.ProductCategories.ToList();
                 if (categories.Empty())
                 {
                     return new Result(Status.NoContent);

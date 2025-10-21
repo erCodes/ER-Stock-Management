@@ -93,7 +93,8 @@
     private async Task Create()
     {
         var store = new Store(Name, City, Address, Supervisor, Phone, Email);
-        var response = await Http.PostAsJsonAsync("http://localhost:5032/NewStore", store);
+        var json = JsonSerializer.Serialize(store);
+        var response = await Http.PostAsync($"https://localhost:7233/NewStore/{Name}/{City}/{Address}/{Supervisor}/{Phone}/{Email}", null);
         if (response.StatusCode == HttpStatusCode.OK)
         {
             Message = "Store added Succesfully";

@@ -8,15 +8,17 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
         Result NewCategory(string name);
     }
 
-    public class Post(Context db) : IPost
+    public class Post : IPost
     {
+        Context Db = new();
+
         public Result NewCategory(string name)
         {
             try
             {
                 var newEntry = new ProductCategory(name);
-                db.ProductCategories.Add(newEntry);
-                db.SaveChanges();
+                Db.ProductCategories.Add(newEntry);
+                Db.SaveChanges();
 
                 return new Result(Status.OK);
             }

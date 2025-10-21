@@ -6,11 +6,25 @@ using static ER_Stock_Management_DataLibrary.Result;
 namespace ER_Stock_Management_API.Controllers
 {
     [ApiController]
-    public class CategoryController(IGet Get, IPost Post, IPut Put, IDelete Delete) : ControllerBase
+    public class CategoryController : ControllerBase
     {
+        public CategoryController(IGet get, IPost post, IPut put, IDelete delete)
+        {
+            Get = get;
+            Post = post;
+            Put = put;
+            Delete = delete;
+        }
+
+        IGet Get;
+        IPost Post;
+        IPut Put;
+        IDelete Delete;
+
         [HttpGet("/GetAllCategories")]
         public IActionResult GetAllCategories()
         {
+            return Ok("TOIMII!!!");
             var result = Get.GetAllCategories();
             if (result.StatusCode == Status.OK)
             {

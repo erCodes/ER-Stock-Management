@@ -1,3 +1,4 @@
+using ER_Stock_Management_DAL.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.StoreRepository.IGet, ER_Stock_Management_DAL.Repositories.StoreRepository.Get>();
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.StoreRepository.IPost, ER_Stock_Management_DAL.Repositories.StoreRepository.Post>();
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.StoreRepository.IPut, ER_Stock_Management_DAL.Repositories.StoreRepository.Put>();
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.StoreRepository.IDelete, ER_Stock_Management_DAL.Repositories.StoreRepository.Delete>();
+
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.CategoryRepository.IGet, ER_Stock_Management_DAL.Repositories.CategoryRepository.Get>();
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.CategoryRepository.IPost, ER_Stock_Management_DAL.Repositories.CategoryRepository.Post>();
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.CategoryRepository.IPut, ER_Stock_Management_DAL.Repositories.CategoryRepository.Put>();
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.CategoryRepository.IDelete, ER_Stock_Management_DAL.Repositories.CategoryRepository.Delete>();
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -25,5 +37,4 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();

@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ER-Stock Management-DAL\ER-Stock Management-DAL.csproj" />
-    <ProjectReference Include="..\ER-Stock Management-DataLibrary\ER-Stock Management-DataLibrary.csproj" />
   </ItemGroup>
 
 </Project>

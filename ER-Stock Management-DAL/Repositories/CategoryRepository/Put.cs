@@ -8,20 +8,22 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
         Result ModifyCategory(ModifiedProductCategory category);
     }
 
-    public class Put(Context db) : IPut
+    public class Put : IPut
     {
+        Context Db = new();
+
         public Result ModifyCategory(ModifiedProductCategory category)
         {
             try
             {
-                var exists = db.ProductCategories.FirstOrDefault(x => x.Id == category.Original.Id);
+                var exists = Db.ProductCategories.FirstOrDefault(x => x.Id == category.Original.Id);
                 if (exists == null)
                 {
                     return new Result(Status.BadRequest);
                 }
 
                 exists.Name = category.NewName;
-                db.SaveChanges();
+                Db.SaveChanges();
 
                 return new Result(Status.OK);
             }
