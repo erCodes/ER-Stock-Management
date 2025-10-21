@@ -10,7 +10,7 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
         Result GetStoreDataWithId(string id);
     }
 
-    public class Get(Context db) : IGet
+    public class Get : IGet
     {
         public Result AllBasicData()
         {
