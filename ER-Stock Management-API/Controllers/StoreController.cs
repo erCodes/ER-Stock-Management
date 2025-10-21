@@ -81,7 +81,7 @@ namespace ER_Stock_Management_API.Controllers
             }
         }
 
-        [HttpDelete("/DeleteStore")]
+        [HttpDelete("/DeleteStore/{id}")]
         public IActionResult DeleteStore(string id)
         {
             var result = Delete.DeleteStore(id);

@@ -1,16 +1,17 @@
 ﻿using ER_Stock_Management_DataLibrary;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ER_Stock_Management_DAL
 {
-    public class Context(DbContextOptions options) : DbContext(options)
+    public class Context : DbContext
     {
         public DbSet<Store> StoresAndProducts { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=StockManagemenDb;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

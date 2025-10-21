@@ -26,7 +26,7 @@ namespace ER_Stock_Management_API.Controllers
             }
         }
 
-        [HttpPost("/NewCategory")]
+        [HttpPost("/NewCategory{name}")]
         public IActionResult NewCategory(string name)
         {
             var result = Post.NewCategory(name);
@@ -58,7 +58,7 @@ namespace ER_Stock_Management_API.Controllers
             }
         }
 
-        [HttpDelete("/DeleteCategory")]
+        [HttpDelete("/DeleteCategory{id}")]
         public IActionResult DeleteCategory(string id)
         {
             var result = Delete.DeleteCategory(id);
