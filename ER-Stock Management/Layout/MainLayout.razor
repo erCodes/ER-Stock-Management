@@ -6,3 +6,15 @@
         </article>
     </main>
 </div>
+
+@code {
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            //do something
+            StateHasChanged();
+        }
+        return Task.CompletedTask;
+    }
+}

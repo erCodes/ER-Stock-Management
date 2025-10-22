@@ -16,6 +16,8 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
         {
             try
             {
+                Db = new();
+
                 store.CleanWhitespaces();
                 store.Id = Guid.NewGuid().ToString();
                 var existsWithSameName = Db.StoresAndProducts.Where(x => x.Name == store.Name)

@@ -17,6 +17,8 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
         {
             try
             {
+                Db = new();
+
                 var store = Db.StoresAndProducts
                     .Where(x => x.Id == id)
                     .Include(y => y.Products)

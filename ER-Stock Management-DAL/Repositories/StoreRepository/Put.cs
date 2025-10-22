@@ -16,6 +16,8 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
         {
             try
             {
+                Db = new();
+
                 var exists = Db.StoresAndProducts
                     .Where(x => x.Id == modified.Id)
                     .FirstOrDefault();
