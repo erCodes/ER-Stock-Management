@@ -11,6 +11,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ER-Stock Management-API", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ER-Stock Management-DAL", "ER-Stock Management-DAL\ER-Stock Management-DAL.csproj", "{7772F3A5-730D-4EC9-8A3A-86EA2ADDFBF0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ER-Stock Management-UI", "ER-Stock Management-UI", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		AddStore.html = AddStore.html
+		Index.html = Index.html
+		ProductCategories.html = ProductCategories.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSS", "CSS", "{2B3EF2BE-6A70-4AAE-BB7E-62B70D5158ED}"
+	ProjectSection(SolutionItems) = preProject
+		Darkmode.css = Darkmode.css
+		Default.css = Default.css
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +49,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2B3EF2BE-6A70-4AAE-BB7E-62B70D5158ED} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4BE4450-CD3E-4208-B05F-45AB3B117500}

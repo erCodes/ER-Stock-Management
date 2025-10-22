@@ -25,7 +25,6 @@ namespace ER_Stock_Management_API.Controllers
         [HttpGet("/AllBasicData")]
         public IActionResult AllBasicData()
         {
-            return Ok("TOIMII!!!");
             var result = Get.AllBasicData();
             if (result.StatusCode == Status.OK)
             {

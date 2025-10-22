@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+
+<html lang="fi" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ER-Stock Management</title>
+    <base href="/" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="ER-Stock Management\Default.css" rel="stylesheet" />
+    <link href="ER-Stock Management\Darkmode.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row p-2">
+            <div class="col-sm text-nowrap">
+                <div class="text-left" id="company">ER-Stock Management</div>
+            </div>
+            <div class="col-md d-flex d-inline align-self-center justify-content-md-end text-nowrap">
+                <div class="d-flex d-inline">
+                    <img class="flags" src="finnish.png" alt="FI" />
+                    <div>&emsp;</div>
+                    <img class="flags" src="english.png" alt="EN" />
+                    <div>&emsp;</div>
+                    <img id="pagecolor" src="darkmode.png" alt="Light/Dark" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row pt-4">
+            <div class="col text-center">
+                <div class="col text-center" id="StoresText"></div>
+                <div class="col text-center" id="ErrorsText"></div>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-auto py-3" id="stores">
+            </div>
+
+            <div class="col-auto py-3">
+                <button type="button" class="btn-secondary" onclick="AddStore()">Add store</button>
+            </div>
+            <div class="col-auto py-3">
+                <button type="button" class="btn-secondary" onclick="ProductCategories()">Product Categories</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        let stores = null;
+
+        window.addEventListener('load', function () {
+            console.log('Loaded')
+            localStorage.clear();
+
+            const response = fetch('https://localhost:7233/AllBasicData')
+                .then(data => data.json())
+                .then(data => {
+                    console.log(data)
+                    if (data) {
+                        document.getElementById('StoresText').innerHTML = 'Select Store to view its products.';
+                        /*Implement Add Store and then enable this*/
+                        data.forEach((element) => CreateStoreButton(element))
+                    }
+                    else {
+                        document.getElementById('StoresText').innerHTML = 'No stores found. Add new one to continue.';
+                    }
+                })
+                // Promise is rejected/unsuccessful. Give error message.  
+                .catch((error) => {
+                    // error is the <reason> of the promise 
+                    console.error(error)
+                }); 
+
+            console.log(window.location)
+            console.log(window.location.href)
+            console.log(window.location.hostname)
+            console.log(window.location.pathname)
+        })
+
+        
+
+        function CreateStoreButton(item, index) {
+            console.log(item);
+            var buttons = document.getElementById('stores');
+            var button1 = document.createElement('button');
+            button1.type = 'button';
+            button1.className = 'btn-primary';
+            button1.value = item.name;
+            button1.innerHTML = item.name;
+
+            //button1.setAttribute('type', 'button');
+            //button1.setAttribute('class', 'btn-primary');
+            //button1.setAttribute('value', item.name);
+            button1.onclick = () => { BrowseStore(item.id) }
+            //button1.innerHTML = item.name;
+
+            buttons.appendChild(button1);
+            console.log(button1);
+        }
+
+        function BrowseStore(id) {
+            Redirect('BrowseStore.html', 'StoreId', id);
+        }
+
+        function AddStore() {
+            Redirect('AddStore.html');
+        }
+
+        function ProductCategories() {
+            Redirect('ProductCategories.html');
+        }
+
+        function Redirect(file, parameterKey = null, parameterValue = null) {
+            let href = window.location.href;
+            let path = href.substring(0, href.lastIndexOf('/')) + "/";
+            let page = path.concat(file)
+
+            if (parameterKey && parameterValue) {
+                localStorage.setItem(parameterKey, parameterValue);
+            }
+
+            window.location.href = page;
+        }
+
+    </script>
+</body>
+</html>
