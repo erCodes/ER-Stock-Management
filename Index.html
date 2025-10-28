@@ -7,10 +7,11 @@
     <title>ER-Stock Management</title>
     <base href="/" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/app.css" />
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <link href="ER-Stock Management\Default.css" rel="stylesheet" />
-    <link href="ER-Stock Management\Darkmode.css" rel="stylesheet" />
+    <!--<link rel="stylesheet" href="css/app.css" />-->
+    <!--<link rel="icon" type="image/png" href="favicon.png" />-->
+    <script type="text/javascript" src="C:\Users\eetur\source\repos\ER-Stock Management\CommonFunctions.js"></script>
+    <link href="ER-Stock Management\CSS\Default.css" rel="stylesheet" />
+    <link href="ER-Stock Management\CSS\Darkmode.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container">
@@ -41,10 +42,10 @@
             </div>
 
             <div class="col-auto py-3">
-                <button type="button" class="btn-secondary" onclick="AddStore()">Add store</button>
+                <button type="button" class="btn btn-secondary" onclick="AddStore()">Add store</button>
             </div>
             <div class="col-auto py-3">
-                <button type="button" class="btn-secondary" onclick="ProductCategories()">Product Categories</button>
+                <button type="button" class="btn btn-secondary" onclick="ProductCategories()">Product Categories</button>
             </div>
         </div>
     </div>
@@ -90,7 +91,7 @@
             var buttons = document.getElementById('stores');
             var button1 = document.createElement('button');
             button1.type = 'button';
-            button1.className = 'btn-primary';
+            button1.className = 'btn btn-primary';
             button1.value = item.name;
             button1.innerHTML = item.name;
 
@@ -115,19 +116,6 @@
         function ProductCategories() {
             Redirect('ProductCategories.html');
         }
-
-        function Redirect(file, parameterKey = null, parameterValue = null) {
-            let href = window.location.href;
-            let path = href.substring(0, href.lastIndexOf('/')) + "/";
-            let page = path.concat(file)
-
-            if (parameterKey && parameterValue) {
-                localStorage.setItem(parameterKey, parameterValue);
-            }
-
-            window.location.href = page;
-        }
-
     </script>
 </body>
 </html>
