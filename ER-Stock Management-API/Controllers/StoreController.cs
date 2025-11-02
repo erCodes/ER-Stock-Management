@@ -1,5 +1,6 @@
 using ER_Stock_Management_DAL.Repositories.StoreRepository;
 using ER_Stock_Management_DataLibrary;
+using ER_Stock_Management_DataLibrary.DTO;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using static ER_Stock_Management_DataLibrary.Result;
@@ -58,10 +59,10 @@ namespace ER_Stock_Management_API.Controllers
             }
         }
 
-        [HttpPost("/NewStore/{name}/{city}/{address}/{supervisor}/{phone}/{email}")]
-        public IActionResult NewStore(string name, string city, string address, string supervisor, string phone, string email)
+        [HttpPost("/NewStore")]
+        public IActionResult NewStore([FromBody] DtoStore dtoStore)
         {
-            var store = new Store(name, city, address, supervisor, phone, email);
+            var store = new Store(dtoStore);
             var result = Post.NewStore(store);
             if (result.StatusCode == Status.OK)
             {

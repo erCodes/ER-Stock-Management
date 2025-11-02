@@ -30,12 +30,12 @@
         <h3>Add new store</h3>
         <button type="button" class="btn btn-secondary" onclick="Redirect('Index.html')">Main page</button>
 
-        <form>
+        <form id="storeinfo">
             <div class="row py-2">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="StoreName">Store Name</label>
-                        <input type="text" class="form-control" id="StoreName" placeholder="Store Name" required>
+                        <label for="Name">Store Name</label>
+                        <input type="text" class="form-control" id="Name" name="Name" placeholder="Store Name" required>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="City">City</label>
-                        <input type="text" class="form-control" id="City" placeholder="City" required>
+                        <input type="text" class="form-control" id="City" name="City" placeholder="City" required>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Address">Address</label>
-                        <input type="text" class="form-control" id="Address" placeholder="Address">
+                        <input type="text" class="form-control" id="Address" name="Address" placeholder="Address">
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Supervisor">Supervisor</label>
-                        <input type="text" class="form-control" id="Supervisor" placeholder="Supervisor">
+                        <input type="text" class="form-control" id="Supervisor" name="Supervisor" placeholder="Supervisor">
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Phone">Phone number</label>
-                        <input type="text" class="form-control" id="Phone" placeholder="Phone">
+                        <input type="text" class="form-control" id="Phone" name="Phone" placeholder="Phone">
                     </div>
                 </div>
             </div>
@@ -75,13 +75,13 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Email">Email</label>
-                        <input type="text" class="form-control" id="Email" placeholder="Email">
+                        <input type="text" class="form-control" id="Email" name="Email" placeholder="Email">
                     </div>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col-6">
-                    <button type="submit" onclick="AddStore()" class="btn btn-primary">Submit</button>
+                    <input type="submit" value="submit" class="btn btn-primary">
                 </div>
             </div>
             <div class="row py-2">
@@ -92,32 +92,34 @@
         </form>
     </div>
         <script>
-            let name = document.getElementById('StoreName').innerText;
-            let city = document.getElementById('City').innerText;
-            let address = document.getElementById('Address').innerText;
-            let supervisor = document.getElementById('Supervisor').innerText;
-            let phone = document.getElementById('Phone').innerText;
-            let email = document.getElementById('Email').innerText;
+            const form = document.querySelector('#storeinfo');
 
-            function AddStore() {
-                // Jatka tästä
-                const promise = fetch('https://localhost:7233/NewStore/${name}/${city}/${address}/${supervisor}/${phone}/${email}', {
-                    method = 'POST'
-                })
-                    .then((response) => {
-                        if (response.ok) {
-                            document.getElementById('Message').innerHTML = 'Store added Succesfully';
-                        }
+            document.addEventListener('DOMContentLoaded', function () {
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    AddStore();
+                });
+            });
 
-                        else {
-                            document.getElementById('Message').innerHTML = '${response.status} : Failed to add new Store';
-                        }
-                    })
-                    .catch((error) => {
-                        console.error(error)
-                    });
+            async function AddStore() {
+                const formData = new FormData(form);
+
+                const jsonData = JSON.stringify(Object.fromEntries(formData));
+                console.log(jsonData);
+
+                await fetch('https://localhost:7233/NewStore', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                    body: jsonData
+                }).then(response => {
+                    if (response.ok) {
+                        document.getElementById('Message').innerHTML = 'Store added.';
+                    }
+                    else {
+                        document.getElementById('Message').innerHTML = response.status + ': Failed to add new store';
+                    }
+                });
             }
-
             
         </script>
 </body>

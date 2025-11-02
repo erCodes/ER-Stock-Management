@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ER_Stock_Management_DataLibrary.DTO;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
@@ -17,14 +18,14 @@ namespace ER_Stock_Management_DataLibrary
         public List<Product>? Products { get; set; } = [];
 
         [SetsRequiredMembers]
-        public Store(string name, string city, string? address, string? supervisor, string? phone, string? email)
+        public Store(DtoStore dtoStore)
         {
-            Name = name;
-            City = city;
-            Address = address;
-            Supervisor = supervisor;
-            Phone = phone;
-            Email = email;
+            Name = dtoStore.Name;
+            City = dtoStore.City;
+            Address = dtoStore.Address;
+            Supervisor = dtoStore.Supervisor;
+            Phone = dtoStore.Phone;
+            Email = dtoStore.Email;
         }
 
         [SetsRequiredMembers]
