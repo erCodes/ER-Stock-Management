@@ -24,7 +24,6 @@ namespace ER_Stock_Management_API.Controllers
         [HttpGet("/GetAllCategories")]
         public IActionResult GetAllCategories()
         {
-            return Ok("TOIMII!!!");
             var result = Get.GetAllCategories();
             if (result.StatusCode == Status.OK)
             {
@@ -55,7 +54,7 @@ namespace ER_Stock_Management_API.Controllers
         }
 
         [HttpPut("/ModifyCategory")]
-        public IActionResult ModifyCategory(ModifiedProductCategory category)
+        public IActionResult ModifyCategory([FromBody]ProductCategory category)
         {
             var result = Put.ModifyCategory(category);
             if (result.StatusCode == Status.OK)
@@ -72,8 +71,8 @@ namespace ER_Stock_Management_API.Controllers
             }
         }
 
-        [HttpDelete("/DeleteCategory{id}")]
-        public IActionResult DeleteCategory(string id)
+        [HttpDelete("/DeleteCategory")]
+        public IActionResult DeleteCategory([FromQuery]string id)
         {
             var result = Delete.DeleteCategory(id);
             if (result.StatusCode == Status.OK)

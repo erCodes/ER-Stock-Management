@@ -3,9 +3,276 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="C:\Users\eetur\source\repos\ER-Stock Management\Default.css" rel="stylesheet" />
+    <link href="C:\Users\eetur\source\repos\ER-Stock Management\Darkmode.css" rel="stylesheet" />
+    <script type="text/javascript" src="C:\Users\eetur\source\repos\ER-Stock Management\CommonFunctions.js"></script>
+    <title>ER-Stock Management Product Categories</title>
 </head>
 <body>
 
+    <div class="row">
+        <div class="col-6">
+            <h3>Product categories</h3>
+            <h4>Add, modify or delete product categories here</h4>
+            <h4 id="Message"></h4>
+            <button type="button" class="btn btn-secondary" onclick="Redirect('Index.html')">Main page</button>
+        </div>
+        <div class="col-6 text-end d-inline-block">
+            <img class="flags p-2" src="finnish.png" alt="FI" />
+            <img class="flags p-2" src="english.png" alt="EN" />
+            <img class="p-2" id="pagecolor" src="darkmode.png" alt="Light/Dark" />
+        </div>
+    </div>
+
+    <div class="container">
+        <table id="categoryInfo" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Category Name</th>
+                    <th scope="col">Modify category</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" @bind-value="NewCategoryName" placeholder="New Category"></td>
+                    <td><button type="submit" @onclick="async () => await NewCategory(NewCategoryName)" class="btn btn-primary">Add New</button></td>
+                </tr>
+                <tr id="categories">
+                    <!--<td>@c.Original.Name</td>
+                    <td><input type="text" @bind-value="c.NewName" placeholder="@c.Original.Name"></td>
+                    <td><input type="submit" @onclick="async () => await Modify(c)" class="btn btn-primary"></td>
+                    <td><input class="form-check-input" id="@c.Original.Id" type="checkbox" @bind="c.Delete"></td>
+                    <td><input type="button" @onclick="async () => await Delete(c)" class="btn btn-danger"></td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const form = document.querySelector('#categoryInfo');
+
+        document.addEventListener('DOMContentLoaded', function () {
+            GetAllCategories();
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+            });
+        });
+
+        async function GetAllCategories() {
+            const promise = fetch('https://localhost:7233/GetAllCategories')
+                .then(data => {
+                    if (!data.ok) {
+                        document.getElementById('Message').innerHTML = 'Failed to get categories. Please try again later.';
+                        throw new Error("Promise chain cancelled");
+                    }
+                    return data.json();
+                })
+                .then(data => {
+                    console.log(data)
+                    if (!data) {
+                        document.getElementById('Message').innerHTML = 'There are no categories. Please add new one to continue';
+                        throw new Error("Promise chain cancelled");
+                    }
+                    else {
+                        data.forEach((element, index) => CreateCategoryCell(element, index))
+                    }
+
+                })
+                .catch((error) => {
+                    console.error(error)
+                }); 
+        }
+
+        function CreateCategoryCell(element, index) {
+            console.log(element, index);
+            const row = document.getElementById('categories');
+            const cell = document.createElement('td');
+            const cellId = 'category' + index;
+            cell.id = cellId;
+            row.appendChild(cell);
+
+            const createdCell = document.getElementById(cellId);
+
+            const inputId = cellId + "Input";
+            var input = document.createElement("input");
+            input.type = "text";
+            input.value = element["name"];
+            input.placeholder = element["name"];
+            input.id = inputId;
+            createdCell.appendChild(input);
+
+            var submit = document.createElement("input");
+            submit.type = "submit";
+            submit.className = "btn btn-primary";
+            submit.value = "Modify";
+            console.log("IdNumero:", inputId);
+            submit.onclick = () => { Modify(element, inputId) }
+            createdCell.appendChild(submit);
+
+            const boxId = cellId + "Delete";
+
+            var deleteLabel = document.createElement("label");
+            deleteLabel.setAttribute("for", boxId);
+            deleteLabel.textContent = "Delete category?"
+            createdCell.appendChild(deleteLabel);
+
+            var deleteCheckbox = document.createElement("input");
+            deleteCheckbox.type = "checkbox";
+            deleteCheckbox.className = "form-check-input";
+            deleteCheckbox.id = boxId;
+            deleteLabel.appendChild(deleteCheckbox);
+            
+
+            var deleteButton = document.createElement("input");
+            deleteButton.type = "button";
+            deleteButton.className = "btn btn-danger";
+            deleteButton.value = "Delete";
+            deleteButton.onclick = () => { Delete(element["id"], boxId) }
+            createdCell.appendChild(deleteButton);
+        }
+
+        function Modify(category, inputId) {
+            console.log("Mitä kuuluu kukkuluuruu", category);
+            const newName = document.getElementById(inputId).value;
+            console.log(newName);
+            category["name"] = newName;
+            const json = JSON.stringify(category);
+            console.log(json);
+            fetch("https://localhost:7233/ModifyCategory", {
+                method: 'PUT',
+                headers: { /*'Accept': 'application/json',*/ 'Content-Type': 'application/json' },
+                body: json
+            }).then(response => {
+                if (response.ok) {
+                    //location.reload();
+                }
+                else {
+                    document.getElementById('Message').innerHTML = response.status + ': Failed to modify category.';
+                }
+            });
+        }
+
+        function Delete(categoryId, boxId) {
+            console.log("Mitä kuuluu kukkuluuruu, lähekkö nää pois?", categoryId, boxId);
+            if (!document.getElementById(boxId).checked) {
+                return;
+            }
+
+            const url = "https://localhost:7233/DeleteCategory?id=" + categoryId;
+
+            fetch(url, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: categoryId
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                }
+                else {
+                    document.getElementById('Message').innerHTML = response.status + ': Failed to delete category.';
+                }
+            });
+        }
+
+    </script>
+
+    <!--@code {
+    string NewCategoryName = string.Empty;
+    List<ProductCategory>
+        Categories = new();
+        List<ModifiedProductCategory>
+            ModifiedCategories = new();
+            string Message = string.Empty;
+
+            protected override async Task OnInitializedAsync()
+            {
+            var response = await Http.GetAsync("http://localhost:5032/GetAllCategories");
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+            var result = await response.Content.ReadAsStringAsync();
+            var serverContent = JsonSerializer.Deserialize<List<ProductCategory>>(result);
+            if (serverContent == null) { return; }
+
+            Categories = serverContent;
+            foreach (var c in Categories)
+            {
+                var newEntry = new ModifiedProductCategory(c);
+                ModifiedCategories.Add(newEntry);
+            }
+            return;
+        }
+
+        else if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+            Message = $"{response.StatusCode}: There are no categories. Please add new one to continue";
+            return;
+        }
+
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to get categories. Please try again later.";
+            return;
+        }
+    }
+
+    private async Task Modify(ModifiedProductCategory modified)
+    {
+        if (string.IsNullOrWhiteSpace(modified.NewName)) { return; }
+
+        var response = await Http.PutAsJsonAsync("http://localhost:5032/ModifyCategory", modified);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            Nav.NavigateTo("/ProductCategories", true);
+        }
+        else if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            Message = $"{response.StatusCode}: You tried to give category name that already exists. Change the name and try again";
+            return;
+        }
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to Add modify category.";
+        }
+    }
+
+    private async Task Delete(ModifiedProductCategory modified)
+    {
+        if (!modified.Delete) { return; }
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri("http://localhost:5032//DeleteCategory"),
+            Content = new StringContent(JsonSerializer.Serialize(modified.Original.Id))
+        };
+
+        var response = await Http.SendAsync(request);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            Nav.NavigateTo("/ProductCategories", true);
+        }
+        else if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+
+        }
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to delete category.";
+        }
+    }
+
+    private async Task NewCategory(string name)
+    {
+        var response = await Http.PostAsJsonAsync("http://localhost:5032/NewCategory", name);
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            Nav.NavigateTo("/ProductCategories", true);
+        }
+        else
+        {
+            Message = $"{response.StatusCode}: Failed to Add new category. Check if category exists already with a same name.";
+        }
+    }-->
 </body>
 </html>

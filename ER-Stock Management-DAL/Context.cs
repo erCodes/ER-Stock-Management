@@ -19,8 +19,8 @@ namespace ER_Stock_Management_DAL
             builder.Entity<Store>()
                 .HasAlternateKey(x => x.Name);
 
-            builder.Entity<ProductCategory>()
-                .HasAlternateKey(x => x.Name);
+            //builder.Entity<ProductCategory>()
+            //    .HasAlternateKey(x => x.Name);
         }
     }
 }

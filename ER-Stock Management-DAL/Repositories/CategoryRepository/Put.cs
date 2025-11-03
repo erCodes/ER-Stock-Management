@@ -5,24 +5,26 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
 {
     public interface IPut
     {
-        Result ModifyCategory(ModifiedProductCategory category);
+        Result ModifyCategory(ProductCategory category);
     }
 
     public class Put : IPut
     {
         Context Db = new();
 
-        public Result ModifyCategory(ModifiedProductCategory category)
+        public Result ModifyCategory(ProductCategory category)
         {
             try
             {
-                var exists = Db.ProductCategories.FirstOrDefault(x => x.Id == category.Original.Id);
+                var exists = Db.ProductCategories.FirstOrDefault(x => x.Id == category.Id);
                 if (exists == null)
                 {
                     return new Result(Status.BadRequest);
                 }
 
-                exists.Name = category.NewName;
+                exists.Name = category.Name;
+                Db.ProductCategories.Update(exists);
+
                 Db.SaveChanges();
 
                 return new Result(Status.OK);
