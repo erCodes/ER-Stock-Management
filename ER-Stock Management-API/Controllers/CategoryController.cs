@@ -39,8 +39,8 @@ namespace ER_Stock_Management_API.Controllers
             }
         }
 
-        [HttpPost("/NewCategory{name}")]
-        public IActionResult NewCategory(string name)
+        [HttpPost("/NewCategory")]
+        public IActionResult NewCategory([FromQuery]string name)
         {
             var result = Post.NewCategory(name);
             if (result.StatusCode == Status.OK)
