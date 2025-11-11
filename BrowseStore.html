@@ -12,5 +12,130 @@
 </head>
 <body>
 
+    <h3 id="Name"></h3>
+    <div class="col-auto py-3">
+        <button type="button" class="btn-primary" onclick="Redirect('Index.html')">Main page</button>
+    </div>
+
+    <h4 id="Message"></h4>
+    
+    <button type="button" class="btn-primary" onclick="Redirect('ModifyStore.html')">Modify store info</button>
+    <button type="button" class="btn-danger" onclick="ShowWarning()">Delete store</button>
+    
+    <div class="row py-2">
+        <div class="col" id="WarningText"></div>
+        <div class="col" id="DeleteCol">
+        </div>
+    </div>
+    
+    <div class="row py-2">
+        <div class="col">City:</div>
+        <div class="col" id="City"></div>
+    </div>
+    <div class="row py-2">
+        <div class="col">Address:</div>
+        <div class="col" id="Address"></div>
+    </div>
+    <div class="row py-2">
+        <div class="col">Supervisor:</div>
+        <div class="col" id="Supervisor"></div>
+    </div>
+    <div class="row py-2">
+        <div class="col">Phone:</div>
+        <div class="col" id="Phone"></div>
+    </div>
+    <div class="row py-2">
+        <div class="col">Email:</div>
+        <div class="col" id="Email"></div>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+        <!--<button type="button" class="btn-primary" @onclick=@(() => Nav.NavigateTo($"ViewProducts/{Store}"))>View products</button>-->
+    </div>
+
+
+
+    <script>
+        let warningShown = false;
+        let storeId = "";
+
+        document.addEventListener('DOMContentLoaded', function () {
+            storeId = localStorage.getItem("StoreId");
+            console.log(storeId);
+            GetStoreInfo(storeId);
+
+            if (!storeId) {
+                document.getElementById("Message").innerHTML = "LocalStorage: No Store id found";
+            }
+        });
+
+        function GetStoreInfo(storeId) {
+            const url = "https://localhost:7233/GetStoreDataWithId?id=" + storeId;
+
+            fetch(url)
+                .then(data => {
+                    if (!data.ok) {
+                        document.getElementById('Message').innerHTML = data.status + ': Failed to get store info. Please try again later.';
+                        throw new Error("Promise chain cancelled");
+                    }
+                    return data.json();
+                })
+                .then(data => {
+                    console.log(data)
+                    if (!data) {
+                        document.getElementById('Message').innerHTML = 'There is no data. Please try again later';
+                        throw new Error("Promise chain cancelled");
+                    }
+                    else {
+                        document.getElementById('Name').innerHTML = data["name"];
+                        document.getElementById('City').innerHTML = data["city"];
+                        document.getElementById('Address').innerHTML = data["address"];
+                        document.getElementById('Supervisor').innerHTML = data["supervisor"];
+                        document.getElementById('Phone').innerHTML = data["phone"];
+                        document.getElementById('Email').innerHTML = data["email"];
+                        localStorage.setItem("StoreAndProducts", data);
+                    }
+
+                })
+                .catch((error) => {
+                    console.error(error)
+                }); 
+        }
+
+        function ShowWarning() {
+            if (!warningShown) {
+                document.getElementById("WarningText").innerHTML = "Deleting store will delete all products also. This action is permanent and cannot be undone.";
+            }
+
+            var delCol = document.getElementById("DeleteCol");
+            var delButton = document.createElement('input');
+            delButton.type = "button";
+            delButton.className = "btn btn-danger";
+            delButton.value = "I am sure";
+            delButton.onclick = () => { DeleteStore(storeId) };
+            delCol.appendChild(delButton);
+
+            warningShown = true;
+        }
+
+        function DeleteStore(storeId) {
+            const url = "https://localhost:7233/DeleteStore?id=" + storeId;
+
+            fetch(url, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: storeId
+            }).then(response => {
+                if (response.ok) {
+                    Redirect("Index.html");
+                }
+                else {
+                    document.getElementById('Message').innerHTML = response.status + ': Failed to delete store.';
+                }
+            });
+        }
+
+    </script>
+
 </body>
 </html>

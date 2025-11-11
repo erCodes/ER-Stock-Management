@@ -41,8 +41,8 @@ namespace ER_Stock_Management_API.Controllers
             }
         }
 
-        [HttpGet("/GetStoreDataWithId/{id}")]
-        public IActionResult GetStoreDataWithId(string id)
+        [HttpGet("/GetStoreDataWithId")]
+        public IActionResult GetStoreDataWithId([FromQuery] string id)
         {
             var result = Get.GetStoreDataWithId(id);
             if (result.StatusCode == Status.OK)
@@ -96,8 +96,8 @@ namespace ER_Stock_Management_API.Controllers
             }
         }
 
-        [HttpDelete("/DeleteStore/{id}")]
-        public IActionResult DeleteStore(string id)
+        [HttpDelete("/DeleteStore")]
+        public IActionResult DeleteStore([FromQuery] string id)
         {
             var result = Delete.DeleteStore(id);
             if (result.StatusCode == Status.OK)
