@@ -14,6 +14,7 @@
 <body>
     <h3 id="Title"></h3>
     <div class="col-auto py-3">
+        <!-- Redirect storen sivulle -->
         <button type="button" class="btn-secondary" onclick="Redirect('')">Main page</button>
     </div>
     <div class="col-6 text-end d-inline-block">
@@ -35,6 +36,11 @@
                 </tr>
             </thead>
             <tbody id="table">
+                <tr>
+                    <td><input type="text" id="NewName" name="Name" placeholder="Name" class="form-control"></td>
+                    <td><input type="text" id="NewAmount" name="Amount" placeholder="Amount" class="form-control"></td>
+                    <td id="NewCategories"></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -47,8 +53,8 @@
         document.addEventListener('DOMContentLoaded', function () {
             storeAndData = localStorage.getItem("StoreAndProducts");
             GetAllCategories();
+            NewCategoryLabels();
             storeAndData['products'].forEach((element, index) => CreateProductInfo(element, index));
-            CreateProductInfo();
         });
 
         function CreateProductInfo(element, index) {
@@ -112,6 +118,25 @@
             row.appendChild(timestampCell);
         }
 
+        function NewCategoryLabels() {
+            let newCatCounter = 0;
+            const newCategories = document.getElementById("NewCategories");
+            for (const entry of categories) {
+                var catLabel = document.createElement("label");
+                catLabel.setAttribute("for", counter);
+                catLabel.textContent = entry['name'];
+                newCategories.appendChild(catLabel);
+
+                var catCheckbox = document.createElement("input");
+                catCheckbox.type = "checkbox";
+                catCheckbox.className = "form-check-input";
+                catCheckbox.id = "NewCat" + newCatCounter;
+                catCheckbox.value = entry;
+
+                newCategories.appendChild(catCheckbox);
+                newCatCounter++;
+            }
+        }
 
         function GetAllCategories() {
             fetch('https://localhost:7233/GetAllCategories')
