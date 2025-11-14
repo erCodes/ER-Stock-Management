@@ -26,7 +26,7 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
                 var stores = Db.StoresAndProducts.ToList();
                 if (stores.Empty())
                 {
-                    return new Result(Status.NoContent);
+                    return new Result(Status.NotFound);
                 }
 
                 return new Result(Status.OK, stores);
@@ -52,7 +52,7 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
 
                 if (store == null)
                 {
-                    return new Result(Status.NoContent);
+                    return new Result(Status.NotFound);
                 }
 
                 return new Result(Status.OK, store);

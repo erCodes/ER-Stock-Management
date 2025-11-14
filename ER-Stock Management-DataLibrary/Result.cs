@@ -14,7 +14,7 @@ namespace ER_Stock_Management_DataLibrary
         public enum Status
         {
             OK,
-            NoContent,
+            NotFound,
             BadRequest,
             ServerError
         }

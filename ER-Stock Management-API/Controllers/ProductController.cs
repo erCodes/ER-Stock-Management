@@ -1,16 +1,16 @@
-using ER_Stock_Management_DAL.Repositories.StoreRepository;
+ï»¿using ER_Stock_Management_DAL.Repositories.ProductRepository;
 using ER_Stock_Management_DataLibrary;
 using ER_Stock_Management_DataLibrary.DTO;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using static ER_Stock_Management_DataLibrary.Result;
+
 
 namespace ER_Stock_Management_API.Controllers
 {
     [ApiController]
-    public class StoreController : ControllerBase
+    public class ProductController : ControllerBase
     {
-        public StoreController(IGet get, IPost post, IPut put, IDelete delete)
+        public ProductController(IGet get, IPost post, IPut put, IDelete delete)
         {
             Get = get;
             Post = post;
@@ -23,13 +23,17 @@ namespace ER_Stock_Management_API.Controllers
         IPut Put;
         IDelete Delete;
 
-        [HttpGet("/AllBasicData")]
-        public IActionResult AllBasicData()
+        [HttpGet("/GetProductWithId")]
+        public IActionResult GetProductWithId([FromQuery] string storeId, string productId)
         {
-            var result = Get.AllBasicData();
+            var result = Get.GetProductWithId(storeId, productId);
             if (result.StatusCode == Status.OK)
             {
                 return Ok(result.Data);
+            }
+            else if (result.StatusCode == Status.BadRequest)
+            {
+                return BadRequest();
             }
             else if (result.StatusCode == Status.NotFound)
             {
@@ -41,30 +45,10 @@ namespace ER_Stock_Management_API.Controllers
             }
         }
 
-        [HttpGet("/GetStoreDataWithId")]
-        public IActionResult GetStoreDataWithId([FromQuery] string id)
+        [HttpPost("/NewProduct")]
+        public IActionResult NewProduct([FromBody]DtoProduct product)
         {
-            var result = Get.GetStoreDataWithId(id);
-            if (result.StatusCode == Status.OK)
-            {
-                return Ok(result.Data);
-            }
-            else if (result.StatusCode == Status.NotFound)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(500);
-            }
-        }
-
-        [HttpPost("/NewStore")]
-        public IActionResult NewStore([FromBody] DtoStore dtoStore)
-        {
-            // Passaa tänne DTOStore
-            var store = new Store(dtoStore);
-            var result = Post.NewStore(store);
+            var result = Post.NewProduct(product);
             if (result.StatusCode == Status.OK)
             {
                 return Ok();
@@ -78,14 +62,19 @@ namespace ER_Stock_Management_API.Controllers
                 return StatusCode(500);
             }
         }
+    
 
-        [HttpPut("/ModifyStore")]
-        public IActionResult ModifyStore(Store store)
+        [HttpPut("/ModifyProduct")]
+        public IActionResult ModifyProduct([FromQuery]string storeId, string productId, DtoProduct product)
         {
-            var result = Put.ModifyStore(store);
+            var result = Put.ModifyProduct(storeId, productId, product);
             if (result.StatusCode == Status.OK)
             {
                 return Ok();
+            }
+            else if (result.StatusCode == Status.BadRequest)
+            {
+                return BadRequest();
             }
             else if (result.StatusCode == Status.NotFound)
             {
@@ -97,13 +86,17 @@ namespace ER_Stock_Management_API.Controllers
             }
         }
 
-        [HttpDelete("/DeleteStore")]
-        public IActionResult DeleteStore([FromQuery] string id)
+        [HttpDelete("/DeleteProduct")]
+        public IActionResult DeleteProduct([FromQuery]string storeId, string productId)
         {
-            var result = Delete.DeleteStore(id);
+            var result = Delete.DeleteProduct(storeId, productId);
             if (result.StatusCode == Status.OK)
             {
                 return Ok();
+            }
+            else if (result.StatusCode == Status.BadRequest)
+            {
+                return BadRequest();
             }
             else if (result.StatusCode == Status.NotFound)
             {

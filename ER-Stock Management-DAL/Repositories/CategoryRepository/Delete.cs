@@ -16,10 +16,12 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
         {
             try
             {
+                Db = new();
+
                 var toRemove = Db.ProductCategories.FirstOrDefault(x => x.Id == id);
                 if (toRemove == null)
                 {
-                    return new Result(Status.NoContent);
+                    return new Result(Status.NotFound);
                 }
 
                 Db.ProductCategories.Remove(toRemove);

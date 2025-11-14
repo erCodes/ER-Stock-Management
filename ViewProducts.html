@@ -14,8 +14,7 @@
 <body>
     <h3 id="Title"></h3>
     <div class="col-auto py-3">
-        <!-- Redirect storen sivulle -->
-        <button type="button" class="btn-secondary" onclick="Redirect('')">Main page</button>
+        <button type="button" class="btn-secondary" onclick="Redirect('BrowseStore.html')">Main page</button>
     </div>
     <div class="col-6 text-end d-inline-block">
         <img class="flags p-2" src="finnish.png" alt="FI" />
@@ -162,54 +161,6 @@
                     console.error(error)
                 });
         }
-
-        //function CreateCategoryCell(element, index) {
-        //    console.log(element, index);
-        //    const row = document.getElementById('categories');
-        //    const cell = document.createElement('tr');
-        //    const cellId = 'category' + index;
-        //    cell.id = cellId;
-        //    row.appendChild(cell);
-
-        //    const createdCell = document.getElementById(cellId);
-
-        //    const inputId = cellId + "Input";
-        //    var input = document.createElement("input");
-        //    input.type = "text";
-        //    input.value = element["name"];
-        //    input.placeholder = element["name"];
-        //    input.id = inputId;
-        //    createdCell.appendChild(input);
-
-        //    var submit = document.createElement("input");
-        //    submit.type = "submit";
-        //    submit.className = "btn btn-primary";
-        //    submit.value = "Modify";
-        //    console.log("IdNumero:", inputId);
-        //    submit.onclick = () => { Modify(element, inputId) }
-        //    createdCell.appendChild(submit);
-
-        //    const boxId = cellId + "Delete";
-
-        //    var deleteLabel = document.createElement("label");
-        //    deleteLabel.setAttribute("for", boxId);
-        //    deleteLabel.textContent = "Delete category?"
-        //    createdCell.appendChild(deleteLabel);
-
-        //    var deleteCheckbox = document.createElement("input");
-        //    deleteCheckbox.type = "checkbox";
-        //    deleteCheckbox.className = "form-check-input";
-        //    deleteCheckbox.id = boxId;
-        //    deleteLabel.appendChild(deleteCheckbox);
-
-
-        //    var deleteButton = document.createElement("input");
-        //    deleteButton.type = "button";
-        //    deleteButton.className = "btn btn-danger";
-        //    deleteButton.value = "Delete";
-        //    deleteButton.onclick = () => { Delete(element["id"], boxId) }
-        //    createdCell.appendChild(deleteButton);
-        //}
 
         function ModifyProduct() {
 

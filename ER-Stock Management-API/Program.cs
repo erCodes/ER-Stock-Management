@@ -15,6 +15,11 @@ builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.StoreRepository.
 builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.StoreRepository.IPut, ER_Stock_Management_DAL.Repositories.StoreRepository.Put>();
 builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.StoreRepository.IDelete, ER_Stock_Management_DAL.Repositories.StoreRepository.Delete>();
 
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.ProductRepository.IGet, ER_Stock_Management_DAL.Repositories.ProductRepository.Get>();
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.ProductRepository.IPost, ER_Stock_Management_DAL.Repositories.ProductRepository.Post>();
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.ProductRepository.IPut, ER_Stock_Management_DAL.Repositories.ProductRepository.Put>();
+builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.ProductRepository.IDelete, ER_Stock_Management_DAL.Repositories.ProductRepository.Delete>();
+
 builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.CategoryRepository.IGet, ER_Stock_Management_DAL.Repositories.CategoryRepository.Get>();
 builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.CategoryRepository.IPost, ER_Stock_Management_DAL.Repositories.CategoryRepository.Post>();
 builder.Services.AddScoped<ER_Stock_Management_DAL.Repositories.CategoryRepository.IPut, ER_Stock_Management_DAL.Repositories.CategoryRepository.Put>();

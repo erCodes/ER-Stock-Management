@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ER_Stock_Management_DataLibrary.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +21,14 @@ namespace ER_Stock_Management_DataLibrary
         public Product()
         {
             CategoryIds ??= [];
+        }
+
+        [SetsRequiredMembers]
+        public Product(DtoProduct dto)
+        {
+            Name = dto.Name;
+            CategoryIds = dto.CategoryIds.ToList();
+            InStock = dto.InStock;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
                 var categories = Db.ProductCategories.ToList();
                 if (categories.Empty())
                 {
-                    return new Result(Status.NoContent);
+                    return new Result(Status.NotFound);
                 }
 
                 return new Result(Status.OK, categories);

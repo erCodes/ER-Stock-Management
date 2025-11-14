@@ -24,7 +24,7 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
 
                 if (exists == null)
                 {
-                    return new Result(Status.NoContent);
+                    return new Result(Status.NotFound);
                 }
 
                 exists = modified;

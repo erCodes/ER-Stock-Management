@@ -29,9 +29,9 @@ namespace ER_Stock_Management_API.Controllers
             {
                 return Ok(result.Data);
             }
-            else if (result.StatusCode == Status.NoContent)
+            else if (result.StatusCode == Status.NotFound)
             {
-                return NoContent();
+                return NotFound();
             }
             else
             {
@@ -79,9 +79,9 @@ namespace ER_Stock_Management_API.Controllers
             {
                 return Ok();
             }
-            else if (result.StatusCode == Status.NoContent)
+            else if (result.StatusCode == Status.NotFound)
             {
-                return NoContent();
+                return NotFound();
             }
             else
             {
