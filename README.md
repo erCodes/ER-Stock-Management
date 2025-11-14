@@ -1,4 +1,4 @@
-## ER-Stock-Management is my new Blazor project
+## ER-Stock-Management is my new Full Satck project
 
 ## Work is still in progress
 
