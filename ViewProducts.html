@@ -36,8 +36,11 @@
             </thead>
             <tbody id="table">
                 <tr>
-                    <td><input type="text" id="NewName" name="Name" placeholder="Name" class="form-control"></td>
-                    <td><input type="text" id="NewAmount" name="Amount" placeholder="Amount" class="form-control"></td>
+                    <td>
+                        <input type="button" name="NewProduct" class="btn btn-primary" onclick="NewProduct()" />
+                        <input type="text" id="NewName" placeholder="Name">
+                    </td>
+                    <td><input type="text" id="NewAmount" placeholder="Amount"></td>
                     <td id="NewCategories"></td>
                 </tr>
             </tbody>
@@ -46,14 +49,20 @@
 
     <script>
         let storeAndData;
-        const categories;
+        let categories = [];
         let counter = 0;
 
         document.addEventListener('DOMContentLoaded', function () {
             storeAndData = localStorage.getItem("StoreAndProducts");
+            console.log(storeAndData);
             GetAllCategories();
+            categories = localStorage.getItem('AllCategories');
+            console.log(categories);
             NewCategoryLabels();
-            storeAndData['products'].forEach((element, index) => CreateProductInfo(element, index));
+
+            if (storeAndData['products']) {
+                storeAndData['products'].forEach((element, index) => CreateProductInfo(element, index));
+            }
         });
 
         function CreateProductInfo(element, index) {
@@ -157,13 +166,55 @@
                         throw new Error("Promise chain cancelled");
                     }
                     else {
-                        categories = data;
+                        // Find solution to this
+                        localStorage.setItem('AllCategories', aa);
                     }
 
                 })
                 .catch((error) => {
                     console.error(error)
                 });
+        }
+
+        function NewProduct() {
+            const storeId = localStorage.getItem("StoreId");
+            const name = document.getElementById('NewName').innerHTML;
+            console.log(name);
+            const amount = document.getElementById('NewAmount').innerHTML;
+            console.log(amount);
+
+            let categoryIds = [];
+
+            var divContent = document.getElementById('NewCategories').children;
+            for (const entry of divContent) {
+                if (entry.getAttribute('type') == 'checkbox') {
+                    if (entry.getAttribute('checked' == true)) {
+                        categoryIds.push(entry.value);
+                    }
+                }
+            }
+
+            var jsonObject = {
+                storeid: storeId,
+                name: name,
+                categoryids: categoryIds,
+                instock: amount
+            }
+
+            const json = JSON.stringify(jsonObject);
+
+            fetch('https://localhost:7233/NewProduct', {
+                method: 'POST',
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: json
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                }
+                else {
+                    document.getElementById('Message').innerHTML = response.status + ': Failed to add new product';
+                }
+            });
         }
 
         function ModifyProduct(storeId, element, index) {
