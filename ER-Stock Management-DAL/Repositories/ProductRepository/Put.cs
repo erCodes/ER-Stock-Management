@@ -6,21 +6,21 @@ namespace ER_Stock_Management_DAL.Repositories.ProductRepository
 {
     public interface IPut
     {
-        Result ModifyProduct(string storeId, string productId, DtoProduct dto);
+        Result ModifyProduct(string productId, DtoProduct dto);
     }
 
     public class Put : IPut
     {
         Context Db = new();
 
-        public Result ModifyProduct(string storeId, string productId, DtoProduct dto)
+        public Result ModifyProduct(string productId, DtoProduct dto)
         {
             try
             {
                 Db = new();
 
                 var store = Db.StoresAndProducts
-                    .Where(x => x.Id == storeId)
+                    .Where(x => x.Id == dto.StoreId)
                     .FirstOrDefault();
 
                 if (store == null)
@@ -37,7 +37,7 @@ namespace ER_Stock_Management_DAL.Repositories.ProductRepository
 
                 product.Name = dto.Name;
                 product.CategoryIds = dto.CategoryIds.ToList();
-                product.InStock = dto.InStock;
+                product.InStock = int.Parse(dto.InStock);
                 product.Timestamp = DateTime.UtcNow;
 
                 // Tarkista tarvitaanko tätä

@@ -28,7 +28,7 @@ namespace ER_Stock_Management_DataLibrary
         {
             Name = dto.Name;
             CategoryIds = dto.CategoryIds.ToList();
-            InStock = dto.InStock;
+            InStock = int.Parse(dto.InStock);
         }
     }
 }

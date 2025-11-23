@@ -71,7 +71,10 @@
             const modifyButton = document.createElement('button');
             modifyButton.type = 'button';
             modifyButton.className = 'btn-primary';
-            modifyButton.onclick = () => { ModifyProduct(element) };
+
+            const storeId = localStorage.getItem("StoreId");
+
+            modifyButton.onclick = () => { ModifyProduct(storeId, element, index) };
             modifyCell.appendChild(modifyButton);
 
             const productName = document.createElement('input');
@@ -90,6 +93,7 @@
             amountCell.appendChild(amount);
 
             const categoryCell = document.createElement('td');
+            categoryCell.id = 'categoryCell' + index;
             row.appendChild(categoryCell);
 
             for (const entry of categories) {
@@ -102,7 +106,7 @@
                 catCheckbox.type = "checkbox";
                 catCheckbox.className = "form-check-input";
                 catCheckbox.id = counter;
-                catCheckbox.value = entry;
+                catCheckbox.value = entry['id'];
                 const found = element['categoryids'].find(entry['id']);
                 if (found) {
                     catCheckbox.checked = true;
@@ -162,8 +166,47 @@
                 });
         }
 
-        function ModifyProduct() {
+        function ModifyProduct(storeId, element, index) {
+            let categoryIds = [];
+            console.log("Mitä kuuluu kukkuluuruu", storeId, element, index);
 
+            var divContent = document.getElementById('categoryCell' + index).children;
+            for (const entry of divContent) {
+                if (entry.getAttribute('type') == 'checkbox') {
+                    if (entry.getAttribute('checked' == true)) {
+                        categoryIds.push(entry.value);
+                    }
+                }
+            }
+
+            const newName = document.getElementById('ProductName' + index).innerHTML;
+            console.log(newName);
+            const newAmount = document.getElementById('Amount' + index).innerHTML;
+            console.log(newAmount);
+
+            var jsonObject = {
+                storeid: storeId,
+                name: newName,
+                categoryids: categoryIds,
+                instock: newAmount
+            }
+
+            let queryString = new URLSearchParams(jsonObject).toString();
+            const url = "https://localhost:7233/ModifyProduct?productid=" + element['id'] + '&product=' + queryString;
+
+            console.log(url);
+            fetch(url, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                //body: categoryId
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                }
+                else {
+                    document.getElementById('Message').innerHTML = response.status + ': Failed to modify product.';
+                }
+            });
         }
     </script>
 </body>

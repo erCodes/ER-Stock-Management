@@ -11,6 +11,6 @@ namespace ER_Stock_Management_DataLibrary.DTO
         public string StoreId { get; set; }
         public string Name { get; set; }
         public string[] CategoryIds { get; set; }
-        public int InStock { get; set; }
+        public string InStock { get; set; }
     }
 }
