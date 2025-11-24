@@ -93,7 +93,7 @@
                         document.getElementById('Supervisor').innerHTML = data["supervisor"];
                         document.getElementById('Phone').innerHTML = data["phone"];
                         document.getElementById('Email').innerHTML = data["email"];
-                        localStorage.setItem("StoreAndProducts", data);
+                        localStorage.setItem("StoreAndProducts", JSON.stringify(data));
                     }
 
                 })

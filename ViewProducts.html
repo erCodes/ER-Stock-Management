@@ -25,7 +25,7 @@
     <h3 id="Message"></h3>
 
     <div class="container">
-        <table class="table table-bordered">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">Products Name</th>
@@ -37,7 +37,7 @@
             <tbody id="table">
                 <tr>
                     <td>
-                        <input type="button" name="NewProduct" class="btn btn-primary" onclick="NewProduct()" />
+                        <input type="button" name="NewProduct" value="New" class="btn btn-primary" onclick="NewProduct()" />
                         <input type="text" id="NewName" placeholder="Name">
                     </td>
                     <td><input type="text" id="NewAmount" placeholder="Amount"></td>
@@ -52,18 +52,21 @@
         let categories = [];
         let counter = 0;
 
-        document.addEventListener('DOMContentLoaded', function () {
-            storeAndData = localStorage.getItem("StoreAndProducts");
+        document.addEventListener('DOMContentLoaded', () => RenderPage(), false);
+
+        async function RenderPage() {
+            storeAndData = JSON.parse(localStorage.getItem("StoreAndProducts"));
             console.log(storeAndData);
-            GetAllCategories();
-            categories = localStorage.getItem('AllCategories');
+            await GetAllCategories();
+            categories = JSON.parse(localStorage.getItem("Categories"));
             console.log(categories);
-            NewCategoryLabels();
+
+            await NewCategoryLabels();
 
             if (storeAndData['products']) {
                 storeAndData['products'].forEach((element, index) => CreateProductInfo(element, index));
             }
-        });
+        }
 
         function CreateProductInfo(element, index) {
             const tBody = document.getElementById('table');
@@ -98,44 +101,53 @@
             const amount = document.createElement('input');
             amount.type = 'text';
             amount.id = "Amount" + index;
-            amount.value = element['instock'];
+            amount.value = element['inStock'];
             amountCell.appendChild(amount);
 
             const categoryCell = document.createElement('td');
             categoryCell.id = 'categoryCell' + index;
             row.appendChild(categoryCell);
 
-            for (const entry of categories) {
-                var catLabel = document.createElement("label");
-                catLabel.setAttribute("for", counter);
-                catLabel.textContent = entry['name'];
-                categoryCell.appendChild(catLabel);
+                for (const entry of categories) {
+                    var catLabel = document.createElement("label");
+                    catLabel.setAttribute("for", counter);
+                    catLabel.textContent = entry['name'];
+                    categoryCell.appendChild(catLabel);
 
-                var catCheckbox = document.createElement("input");
-                catCheckbox.type = "checkbox";
-                catCheckbox.className = "form-check-input";
-                catCheckbox.id = counter;
-                catCheckbox.value = entry['id'];
-                const found = element['categoryids'].find(entry['id']);
-                if (found) {
-                    catCheckbox.checked = true;
+                    var catCheckbox = document.createElement("input");
+                    catCheckbox.type = "checkbox";
+                    catCheckbox.className = "form-check-input";
+                    catCheckbox.id = counter;
+                    catCheckbox.value = entry['id'];
+
+                    const categoryIds = Array.from(element['categoryIds']);
+                    console.log(categoryIds);
+
+                    if (categoryIds.length != 0) {
+                        for (const id of categoryIds) {
+                            if (id == entry['id']) {
+                                catCheckbox.checked = true;
+                            }
+                        }
+                    }
+                    
+                    catLabel.appendChild(catCheckbox);
+                    counter++;
                 }
-
-                catLabel.appendChild(catCheckbox);
-                counter++;
-            }
+            
 
             const timestampCell = document.createElement('td');
             timestampCell.textContent = element['timestamp'];
             row.appendChild(timestampCell);
         }
 
-        function NewCategoryLabels() {
+        async function NewCategoryLabels() {
             let newCatCounter = 0;
             const newCategories = document.getElementById("NewCategories");
             for (const entry of categories) {
                 var catLabel = document.createElement("label");
-                catLabel.setAttribute("for", counter);
+                const catId = 'NewCat' + newCatCounter;
+                catLabel.setAttribute("for", catId);
                 catLabel.textContent = entry['name'];
                 newCategories.appendChild(catLabel);
 
@@ -143,57 +155,54 @@
                 catCheckbox.type = "checkbox";
                 catCheckbox.className = "form-check-input";
                 catCheckbox.id = "NewCat" + newCatCounter;
-                catCheckbox.value = entry;
+                console.log(entry['id']);
+                catCheckbox.value = entry['id'];
 
                 newCategories.appendChild(catCheckbox);
                 newCatCounter++;
             }
         }
 
-        function GetAllCategories() {
-            fetch('https://localhost:7233/GetAllCategories')
-                .then(data => {
-                    if (!data.ok) {
-                        document.getElementById('Message').innerHTML = 'Failed to get categories. Please try again later.';
-                        throw new Error("Promise chain cancelled");
-                    }
-                    return data.json();
-                })
-                .then(data => {
-                    console.log(data)
-                    if (!data) {
-                        document.getElementById('Message').innerHTML = 'There are no categories. Please add new one to continue';
-                        throw new Error("Promise chain cancelled");
-                    }
-                    else {
-                        // Find solution to this
-                        localStorage.setItem('AllCategories', aa);
-                    }
+        async function GetAllCategories() {
+            try {
+                const promise = await fetch('https://localhost:7233/GetAllCategories');
 
-                })
-                .catch((error) => {
-                    console.error(error)
-                });
+                if (!promise.ok) {
+                    document.getElementById('Message').innerHTML = 'Failed to get categories. Please try again later.';
+                }
+
+                const data = await promise.json();
+                console.log(data);
+                localStorage.setItem('Categories', JSON.stringify(data));
+            }
+
+            catch (error) {
+                console.error(error);
+            }
         }
 
-        function NewProduct() {
+        async function NewProduct() {
             const storeId = localStorage.getItem("StoreId");
-            const name = document.getElementById('NewName').innerHTML;
+            const name = document.getElementById("NewName").value;
             console.log(name);
-            const amount = document.getElementById('NewAmount').innerHTML;
+            const amount = document.getElementById("NewAmount").value;
             console.log(amount);
 
             let categoryIds = [];
 
             var divContent = document.getElementById('NewCategories').children;
+            console.log(divContent)
             for (const entry of divContent) {
-                if (entry.getAttribute('type') == 'checkbox') {
-                    if (entry.getAttribute('checked' == true)) {
+
+                if (entry.className == 'form-check-input') {
+                    console.log(entry.className);
+                    if (entry.checked) {
+                        console.log(entry.value)
                         categoryIds.push(entry.value);
                     }
                 }
             }
-
+            console.log(categoryIds);
             var jsonObject = {
                 storeid: storeId,
                 name: name,
@@ -203,13 +212,14 @@
 
             const json = JSON.stringify(jsonObject);
 
-            fetch('https://localhost:7233/NewProduct', {
+            await fetch('https://localhost:7233/NewProduct', {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                 body: json
             }).then(response => {
                 if (response.ok) {
-                    location.reload();
+                    //location.reload();
+                    console.log("LÄPI MENI");
                 }
                 else {
                     document.getElementById('Message').innerHTML = response.status + ': Failed to add new product';
