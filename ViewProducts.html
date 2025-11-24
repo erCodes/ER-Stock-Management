@@ -130,14 +130,18 @@
                             }
                         }
                     }
-                    
-                    catLabel.appendChild(catCheckbox);
+
+                    categoryCell.appendChild(catCheckbox);
                     counter++;
                 }
-            
 
             const timestampCell = document.createElement('td');
-            timestampCell.textContent = element['timestamp'];
+
+            let currentDate = new Date(element['timestamp']).toLocaleDateString("en-GB").toString()
+            let currentTime = new Date(element['timestamp']).toLocaleTimeString("en-GB").toString();
+            let displayed = currentDate + " " + currentTime;
+
+            timestampCell.textContent = displayed;
             row.appendChild(timestampCell);
         }
 
@@ -205,6 +209,7 @@
             console.log(categoryIds);
             var jsonObject = {
                 storeid: storeId,
+                productid: '',
                 name: name,
                 categoryids: categoryIds,
                 instock: amount
@@ -220,6 +225,7 @@
                 if (response.ok) {
                     //location.reload();
                     console.log("LÄPI MENI");
+                    GetUpdatedStoreInfo();
                 }
                 else {
                     document.getElementById('Message').innerHTML = response.status + ': Failed to add new product';
@@ -227,42 +233,71 @@
             });
         }
 
+        async function GetUpdatedStoreInfo() {
+            try {
+                const storeId = localStorage.getItem("StoreId");
+                const url = 'https://localhost:7233/GetStoreDataWithId?id=' + storeId;
+                const promise = await fetch(url);
+
+                if (!promise.ok) {
+                    document.getElementById('Message').innerHTML = 'Failed to get Store. Please try again later.';
+                }
+
+                const data = await promise.json();
+                console.log(data);
+                localStorage.setItem('StoreAndProducts', JSON.stringify(data));
+                console.log("STORE DATA UPDATED")
+                location.reload();
+            }
+
+            catch (error) {
+                console.error(error);
+            }
+        }
+
         function ModifyProduct(storeId, element, index) {
             let categoryIds = [];
             console.log("Mitä kuuluu kukkuluuruu", storeId, element, index);
 
             var divContent = document.getElementById('categoryCell' + index).children;
+            console.log(divContent);
             for (const entry of divContent) {
-                if (entry.getAttribute('type') == 'checkbox') {
-                    if (entry.getAttribute('checked' == true)) {
+                if (entry.className == 'form-check-input') {
+                    console.log(entry.className);
+                    if (entry.checked) {
+                        console.log(entry.value)
                         categoryIds.push(entry.value);
                     }
                 }
             }
 
-            const newName = document.getElementById('ProductName' + index).innerHTML;
+            const newName = document.getElementById('ProductName' + index).value;
             console.log(newName);
-            const newAmount = document.getElementById('Amount' + index).innerHTML;
+            const newAmount = document.getElementById('Amount' + index).value;
             console.log(newAmount);
 
             var jsonObject = {
                 storeid: storeId,
+                productid: element['id'],
                 name: newName,
                 categoryids: categoryIds,
                 instock: newAmount
             }
 
-            let queryString = new URLSearchParams(jsonObject).toString();
-            const url = "https://localhost:7233/ModifyProduct?productid=" + element['id'] + '&product=' + queryString;
+            const json = JSON.stringify(jsonObject);
 
-            console.log(url);
+            //let queryString = new URLSearchParams(jsonObject).toString();
+            const url = "https://localhost:7233/ModifyProduct";
+
+            console.log(jsonObject);
             fetch(url, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                //body: categoryId
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: json
             }).then(response => {
                 if (response.ok) {
-                    location.reload();
+                    console.log("LÄPI MENI");
+                    GetUpdatedStoreInfo();
                 }
                 else {
                     document.getElementById('Message').innerHTML = response.status + ': Failed to modify product.';

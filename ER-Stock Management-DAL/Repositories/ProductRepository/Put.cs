@@ -1,19 +1,20 @@
 ﻿using ER_Stock_Management_DataLibrary;
 using ER_Stock_Management_DataLibrary.DTO;
+using Microsoft.EntityFrameworkCore;
 using static ER_Stock_Management_DataLibrary.Result;
 
 namespace ER_Stock_Management_DAL.Repositories.ProductRepository
 {
     public interface IPut
     {
-        Result ModifyProduct(string productId, DtoProduct dto);
+        Result ModifyProduct(DtoProduct dto);
     }
 
     public class Put : IPut
     {
         Context Db = new();
 
-        public Result ModifyProduct(string productId, DtoProduct dto)
+        public Result ModifyProduct(DtoProduct dto)
         {
             try
             {
@@ -21,6 +22,7 @@ namespace ER_Stock_Management_DAL.Repositories.ProductRepository
 
                 var store = Db.StoresAndProducts
                     .Where(x => x.Id == dto.StoreId)
+                    .Include(y => y.Products)
                     .FirstOrDefault();
 
                 if (store == null)
@@ -28,7 +30,7 @@ namespace ER_Stock_Management_DAL.Repositories.ProductRepository
                     return new Result(Status.BadRequest);
                 }
 
-                var product = store.Products.FirstOrDefault(x => x.Id == productId);
+                var product = store.Products.FirstOrDefault(x => x.Id == dto.ProductId);
 
                 if (product == null)
                 {
@@ -41,7 +43,7 @@ namespace ER_Stock_Management_DAL.Repositories.ProductRepository
                 product.Timestamp = DateTime.UtcNow;
 
                 // Tarkista tarvitaanko tätä
-                int index = store.Products.FindIndex(x => x.Id == productId);
+                int index = store.Products.FindIndex(x => x.Id == dto.ProductId);
 
                 store.Products[index] = product;
 

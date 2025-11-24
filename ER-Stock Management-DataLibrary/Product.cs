@@ -26,6 +26,11 @@ namespace ER_Stock_Management_DataLibrary
         [SetsRequiredMembers]
         public Product(DtoProduct dto)
         {
+            if (!string.IsNullOrWhiteSpace(dto.ProductId))
+            {
+                Id = dto.ProductId;
+            }
+
             Name = dto.Name;
             CategoryIds = dto.CategoryIds.ToList();
             InStock = int.Parse(dto.InStock);

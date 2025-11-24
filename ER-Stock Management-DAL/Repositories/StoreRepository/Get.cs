@@ -41,8 +41,8 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
 
         public Result GetStoreDataWithId(string id)
         {
-                try
-                {
+            try
+            {
                 Db = new();
 
                 var store = Db.StoresAndProducts

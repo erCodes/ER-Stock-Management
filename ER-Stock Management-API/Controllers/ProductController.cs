@@ -65,9 +65,9 @@ namespace ER_Stock_Management_API.Controllers
     
 
         [HttpPut("/ModifyProduct")]
-        public IActionResult ModifyProduct([FromQuery]string productId, DtoProduct product)
+        public IActionResult ModifyProduct([FromBody]DtoProduct product)
         {
-            var result = Put.ModifyProduct(productId, product);
+            var result = Put.ModifyProduct(product);
             if (result.StatusCode == Status.OK)
             {
                 return Ok();
