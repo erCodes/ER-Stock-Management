@@ -20,6 +20,7 @@ namespace ER_Stock_Management_DataLibrary
         [SetsRequiredMembers]
         public Store(DtoStore dtoStore)
         {
+            Id = dtoStore.Id;
             Name = dtoStore.Name;
             City = dtoStore.City;
             Address = dtoStore.Address;

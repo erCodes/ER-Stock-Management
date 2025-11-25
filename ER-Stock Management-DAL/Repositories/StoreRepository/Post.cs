@@ -1,25 +1,40 @@
 ﻿using ER_Stock_Management_DataLibrary;
+using ER_Stock_Management_DataLibrary.DTO;
 using static ER_Stock_Management_DataLibrary.Result;
 
 namespace ER_Stock_Management_DAL.Repositories.StoreRepository
 {
     public interface IPost
     {
-        Result NewStore(Store store);
+        Result NewStore(DtoStore dto);
     }
 
     public class Post : IPost
     {
         Context Db = new();
 
-        public Result NewStore(Store store)
+        public Result NewStore(DtoStore dto)
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(dto.Name)
+                || string.IsNullOrWhiteSpace(dto.City)
+                || string.IsNullOrWhiteSpace(dto.Address)
+                || string.IsNullOrWhiteSpace(dto.Supervisor)
+                || string.IsNullOrWhiteSpace(dto.Phone)
+                || string.IsNullOrWhiteSpace(dto.Email))
+                {
+                    return new Result(Status.BadRequest);
+                }
+
+                var store = new Store(dto)
+                {
+                    Id = Guid.NewGuid().ToString()
+                };
+                store.CleanWhitespaces();
+
                 Db = new();
 
-                store.CleanWhitespaces();
-                store.Id = Guid.NewGuid().ToString();
                 var existsWithSameName = Db.StoresAndProducts.Where(x => x.Name == store.Name)
                     .FirstOrDefault();
 

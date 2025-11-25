@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ER-Stock Management-UI", "E
 		BrowseStore.html = BrowseStore.html
 		CommonFunctions.js = CommonFunctions.js
 		Index.html = Index.html
+		ModifyStoreInfo.html = ModifyStoreInfo.html
 		ProductCategories.html = ProductCategories.html
 		ViewProducts.html = ViewProducts.html
 	EndProjectSection

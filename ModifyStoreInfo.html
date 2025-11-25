@@ -8,7 +8,7 @@
     <link href="C:\Users\eetur\source\repos\ER-Stock Management\Default.css" rel="stylesheet" />
     <link href="C:\Users\eetur\source\repos\ER-Stock Management\Darkmode.css" rel="stylesheet" />
     <script type="text/javascript" src="C:\Users\eetur\source\repos\ER-Stock Management\CommonFunctions.js"></script>
-    <title>ER-Stock Management Add Store</title>
+    <title>ER-Stock Management Modify Store Info</title>
 </head>
 <body>
     <div class="container">
@@ -27,8 +27,8 @@
             </div>
         </div>
 
-        <h3>Add new store</h3>
-        <button type="button" class="btn btn-secondary" onclick="Redirect('Index.html')">Main page</button>
+        <h3>Modify store info</h3>
+        <button type="button" class="btn btn-secondary" onclick="Redirect('BrowseStore.html')">Main page</button>
 
         <form id="storeinfo">
             <input type="text" class="form-control" id="Id" name="Id" hidden>
@@ -36,7 +36,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Name">Store Name</label>
-                        <input type="text" class="form-control" id="Name" name="Name" placeholder="Store Name" required>
+                        <input type="text" class="form-control" id="Name" name="Name" required>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="City">City</label>
-                        <input type="text" class="form-control" id="City" name="City" placeholder="City" required>
+                        <input type="text" class="form-control" id="City" name="City" required>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Address">Address</label>
-                        <input type="text" class="form-control" id="Address" name="Address" placeholder="Address">
+                        <input type="text" class="form-control" id="Address" name="Address" required>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Supervisor">Supervisor</label>
-                        <input type="text" class="form-control" id="Supervisor" name="Supervisor" placeholder="Supervisor">
+                        <input type="text" class="form-control" id="Supervisor" name="Supervisor" required>
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Phone">Phone number</label>
-                        <input type="text" class="form-control" id="Phone" name="Phone" placeholder="Phone">
+                        <input type="text" class="form-control" id="Phone" name="Phone" required>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Email">Email</label>
-                        <input type="text" class="form-control" id="Email" name="Email" placeholder="Email">
+                        <input type="text" class="form-control" id="Email" name="Email" required>
                     </div>
                 </div>
             </div>
@@ -92,36 +92,61 @@
             </div>
         </form>
     </div>
-        <script>
-            const form = document.querySelector('#storeinfo');
 
-            document.addEventListener('DOMContentLoaded', function () {
-                form.addEventListener('submit', (event) => {
-                    event.preventDefault();
-                    AddStore();
-                });
+    <script>
+        const form = document.querySelector('#storeinfo');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            ModifyStore();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => RenderPage(), false);
+
+        async function RenderPage() {
+            const storeData = JSON.parse(localStorage.getItem('StoreAndProducts'));
+            console.log(storeData);
+
+            document.getElementById('Id').value = storeData['id'];
+
+            let name = document.getElementById('Name');
+            name.setAttribute('placeholder', storeData['name']);
+
+            let city = document.getElementById('City');
+            city.setAttribute('placeholder', storeData['city']);
+
+            let address = document.getElementById('Address');
+            address.setAttribute('placeholder', storeData['address']);
+
+            let supervisor = document.getElementById('Supervisor');
+            supervisor.setAttribute('placeholder', storeData['supervisor']);
+
+            let phone = document.getElementById('Phone');
+            phone.setAttribute('placeholder', storeData['phone']);
+
+            let email = document.getElementById('Email');
+            email.setAttribute('placeholder', storeData['email']);
+        }
+
+        async function ModifyStore() {
+            const formData = new FormData(form);
+
+            const jsonData = JSON.stringify(Object.fromEntries(formData));
+            console.log(jsonData);
+
+            await fetch('https://localhost:7233/ModifyStore', {
+                method: 'PUT',
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: jsonData
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById('Message').innerHTML = 'Store modified.';
+                }
+                else {
+                    document.getElementById('Message').innerHTML = response.status + ': Failed to modify store';
+                }
             });
+        }
 
-            async function AddStore() {
-                const formData = new FormData(form);
-
-                const jsonData = JSON.stringify(Object.fromEntries(formData));
-                console.log(jsonData);
-
-                await fetch('https://localhost:7233/NewStore', {
-                    method: 'POST',
-                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                    body: jsonData
-                }).then(response => {
-                    if (response.ok) {
-                        document.getElementById('Message').innerHTML = 'Store added.';
-                    }
-                    else {
-                        document.getElementById('Message').innerHTML = response.status + ': Failed to add new store';
-                    }
-                });
-            }
-            
-        </script>
+    </script>
 </body>
 </html>

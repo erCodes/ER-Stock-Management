@@ -42,7 +42,7 @@ namespace ER_Stock_Management_API.Controllers
         }
 
         [HttpGet("/GetStoreDataWithId")]
-        public IActionResult GetStoreDataWithId([FromQuery] string id)
+        public IActionResult GetStoreDataWithId([FromQuery]string id)
         {
             var result = Get.GetStoreDataWithId(id);
             if (result.StatusCode == Status.OK)
@@ -60,11 +60,9 @@ namespace ER_Stock_Management_API.Controllers
         }
 
         [HttpPost("/NewStore")]
-        public IActionResult NewStore([FromBody] DtoStore dtoStore)
+        public IActionResult NewStore([FromBody]DtoStore dtoStore)
         {
-            // Passaa tänne DTOStore
-            var store = new Store(dtoStore);
-            var result = Post.NewStore(store);
+            var result = Post.NewStore(dtoStore);
             if (result.StatusCode == Status.OK)
             {
                 return Ok();
@@ -80,9 +78,9 @@ namespace ER_Stock_Management_API.Controllers
         }
 
         [HttpPut("/ModifyStore")]
-        public IActionResult ModifyStore(Store store)
+        public IActionResult ModifyStore([FromBody]DtoStore dtoStore)
         {
-            var result = Put.ModifyStore(store);
+            var result = Put.ModifyStore(dtoStore);
             if (result.StatusCode == Status.OK)
             {
                 return Ok();
@@ -98,7 +96,7 @@ namespace ER_Stock_Management_API.Controllers
         }
 
         [HttpDelete("/DeleteStore")]
-        public IActionResult DeleteStore([FromQuery] string id)
+        public IActionResult DeleteStore([FromQuery]string id)
         {
             var result = Delete.DeleteStore(id);
             if (result.StatusCode == Status.OK)

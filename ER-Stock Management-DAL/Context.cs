@@ -16,8 +16,8 @@ namespace ER_Stock_Management_DAL
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Store>()
-                .HasAlternateKey(x => x.Name);
+            //builder.Entity<Store>()
+            //    .HasAlternateKey(x => x.Name);
 
             //builder.Entity<ProductCategory>()
             //    .HasAlternateKey(x => x.Name);

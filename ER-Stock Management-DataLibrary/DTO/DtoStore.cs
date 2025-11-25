@@ -9,6 +9,7 @@ namespace ER_Stock_Management_DataLibrary.DTO
 {
     public class DtoStore
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string City { get; set; }
         public string Address { get; set; }
