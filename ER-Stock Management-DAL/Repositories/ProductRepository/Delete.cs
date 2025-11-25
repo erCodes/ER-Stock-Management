@@ -1,4 +1,5 @@
 ﻿using ER_Stock_Management_DataLibrary;
+using Microsoft.EntityFrameworkCore;
 using static ER_Stock_Management_DataLibrary.Result;
 
 namespace ER_Stock_Management_DAL.Repositories.ProductRepository
@@ -18,7 +19,11 @@ namespace ER_Stock_Management_DAL.Repositories.ProductRepository
             {
                 Db = new();
 
-                var store = Db.StoresAndProducts.FirstOrDefault(x => x.Id == storeId);
+                var store = Db.StoresAndProducts
+                    .Where(x => x.Id == storeId)
+                    .Include(y => y.Products)
+                    .FirstOrDefault();
+
                 if (store == null)
                 {
                     return new Result(Status.BadRequest);

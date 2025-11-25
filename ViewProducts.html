@@ -80,12 +80,19 @@
             modifyCell.id = modifyCellId;
             row.appendChild(modifyCell);
 
-            const modifyButton = document.createElement('button');
-            modifyButton.type = 'button';
-            modifyButton.className = 'btn-primary';
-
             const storeId = localStorage.getItem("StoreId");
 
+            const deleteButton = document.createElement('button');
+            deleteButton.type = 'button';
+            deleteButton.className = 'btn btn-danger';
+            deleteButton.innerHTML = 'Delete';
+            deleteButton.onclick = () => { DeleteProduct(storeId, element['id']) };
+            modifyCell.appendChild(deleteButton);
+
+            const modifyButton = document.createElement('button');
+            modifyButton.type = 'button';
+            modifyButton.className = 'btn btn-primary';
+            modifyButton.innerHTML = 'Modify';
             modifyButton.onclick = () => { ModifyProduct(storeId, element, index) };
             modifyCell.appendChild(modifyButton);
 
@@ -301,6 +308,22 @@
                 }
                 else {
                     document.getElementById('Message').innerHTML = response.status + ': Failed to modify product.';
+                }
+            });
+        }
+
+        async function DeleteProduct(storeId, productId) {
+            const url = 'https://localhost:7233/DeleteProduct?storeid=' + storeId + '&productid=' + productId;
+
+            fetch(url, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            }).then(response => {
+                if (!response.ok) {
+                    document.getElementById('Message').innerHTML = response.status + ': Failed to delete product.';
+                }
+                else {
+                    GetUpdatedStoreInfo();
                 }
             });
         }

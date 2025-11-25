@@ -17,6 +17,13 @@ namespace ER_Stock_Management_DAL.Repositories.ProductRepository
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(dto.Name)
+                    || string.IsNullOrWhiteSpace(dto.InStock)
+                    || dto.CategoryIds.Empty())
+                {
+                    return new Result(Status.BadRequest);
+                }
+
                 Db = new();
 
                 var store = Db.StoresAndProducts
