@@ -12,19 +12,29 @@
     <link href="C:\Users\eetur\source\repos\ER-Stock Management\Darkmode.css" rel="stylesheet" />
 </head>
 <body>
-    <h3 id="Title"></h3>
-    <div class="col-auto py-3">
-        <button type="button" class="btn-secondary" onclick="Redirect('BrowseStore.html')">Main page</button>
-    </div>
-    <div class="col-6 text-end d-inline-block">
-        <img class="flags p-2" src="finnish.png" alt="FI" />
-        <img class="flags p-2" src="english.png" alt="EN" />
-        <img class="p-2" id="pagecolor" src="darkmode.png" alt="Light/Dark" />
-    </div>
-
-    <h3 id="Message"></h3>
-
     <div class="container">
+        <div class="row p-2">
+            <div class="col-sm text-nowrap">
+                <div class="text-left" id="company">ER-Stock Management</div>
+            </div>
+            <div class="col-md d-flex d-inline align-self-center justify-content-md-end text-nowrap">
+                <div class="d-flex d-inline">
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\fi.png" alt="FI" />
+                    <div>&emsp;</div>
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\gb.png" alt="EN" />
+                    <div>&emsp;</div>
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\dark.png" alt="Light/Dark" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto py-3">
+            <button type="button" class="btn btn-secondary" onclick="Redirect('BrowseStore.html')">Main page</button>
+        </div>
+
+        <h3 id="Title"></h3>
+        <h3 id="Message"></h3>
+
         <table class="table table-hover">
             <thead>
                 <tr>

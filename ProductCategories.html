@@ -11,33 +11,43 @@
     <title>ER-Stock Management Product Categories</title>
 </head>
 <body>
+    <div class="container">
+        <div class="row p-2">
+            <div class="col-sm text-nowrap">
+                <div class="text-left" id="company">ER-Stock Management</div>
+            </div>
+            <div class="col-md d-flex d-inline align-self-center justify-content-md-end text-nowrap">
+                <div class="d-flex d-inline">
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\fi.png" alt="FI" />
+                    <div>&emsp;</div>
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\gb.png" alt="EN" />
+                    <div>&emsp;</div>
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\dark.png" alt="Light/Dark" />
+                </div>
+            </div>
+        </div>
 
-    <div class="row">
-        <div class="col-6">
-            <h3>Product categories</h3>
-            <h4>Add, modify or delete product categories here</h4>
-            <h4 id="Message"></h4>
+        <div class="col-auto py-3">
             <button type="button" class="btn btn-secondary" onclick="Redirect('Index.html')">Main page</button>
         </div>
-        <div class="col-6 text-end d-inline-block">
-            <img class="flags p-2" src="finnish.png" alt="FI" />
-            <img class="flags p-2" src="english.png" alt="EN" />
-            <img class="p-2" id="pagecolor" src="darkmode.png" alt="Light/Dark" />
-        </div>
-    </div>
 
-    <div class="container">
-        <table id="categoryInfo" class="table table-bordered">
+        <h4>Product categories</h4>
+        <h4>Add, modify or delete product categories here</h4>
+        <h4 id="Message"></h4>
+
+        <table id="categoryInfo" class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">Category Name</th>
-                    <th scope="col">Modify category</th>
+                    <!--<th scope="col">Modify category</th>-->
                 </tr>
             </thead>
             <tbody id="categories">
                 <tr>
-                    <td><input type="text" id="NewCategoryName" placeholder="New Category"></td>
-                    <td><button type="submit" onclick="NewCategory()" class="btn btn-primary">Add New</button></td>
+                    <td>
+                        <button type="submit" onclick="NewCategory()" class="btn btn-primary">Add New</button>
+                        <input type="text" id="NewCategoryName" placeholder="New Category">
+                    </td>
                 </tr>
             </tbody>
         </table>
