@@ -35,8 +35,7 @@ namespace ER_Stock_Management_DAL.Repositories.ProductRepository
                     return new Result(Status.NotFound);
                 }
 
-                store.Products.Remove(product);
-                Db.StoresAndProducts.Update(store);
+                Db.Remove(product);
                 Db.SaveChanges();
 
                 return new Result(Status.OK);

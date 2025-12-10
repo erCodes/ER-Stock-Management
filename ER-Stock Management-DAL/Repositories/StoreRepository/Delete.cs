@@ -29,6 +29,11 @@ namespace ER_Stock_Management_DAL.Repositories.StoreRepository
                     return new Result(Status.NotFound);
                 }
 
+                if (!store.Products.Empty())
+                {
+                    Db.RemoveRange(store.Products);
+                }
+
                 Db.StoresAndProducts.Remove(store);
                 Db.SaveChanges();
 
