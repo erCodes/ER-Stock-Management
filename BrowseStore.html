@@ -8,71 +8,115 @@
     <link href="C:\Users\eetur\source\repos\ER-Stock Management\Default.css" rel="stylesheet" />
     <link href="C:\Users\eetur\source\repos\ER-Stock Management\Darkmode.css" rel="stylesheet" />
     <script type="text/javascript" src="C:\Users\eetur\source\repos\ER-Stock Management\CommonFunctions.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <title>ER-Stock Management Browse Store</title>
 </head>
 <body>
-
-    <h3 id="Name"></h3>
-    <div class="col-auto py-3">
-        <button type="button" class="btn-primary" onclick="Redirect('Index.html')">Main page</button>
-    </div>
-
-    <h4 id="Message"></h4>
-    
-    <button type="button" class="btn-primary" onclick="Redirect('ModifyStoreInfo.html')">Modify store info</button>
-    <button type="button" class="btn-danger" onclick="ShowWarning()">Delete store</button>
-    
-    <div class="row py-2">
-        <div class="col" id="WarningText"></div>
-        <div class="col" id="DeleteCol">
+    <div class="container">
+        <div class="row p-2">
+            <div class="col-sm text-nowrap">
+                <div class="text-left" id="company">ER-Stock Management</div>
+            </div>
+            <div class="col-md d-flex d-inline align-self-center justify-content-md-end text-nowrap">
+                <div class="d-flex d-inline">
+                    <img class="flags" src="finnish.png" alt="FI" />
+                    <div>&emsp;</div>
+                    <img class="flags" src="english.png" alt="EN" />
+                    <div>&emsp;</div>
+                    <img id="pagecolor" src="darkmode.png" alt="Light/Dark" />
+                </div>
+            </div>
         </div>
-    </div>
-    
-    <div class="row py-2">
-        <div class="col">City:</div>
-        <div class="col" id="City"></div>
-    </div>
-    <div class="row py-2">
-        <div class="col">Address:</div>
-        <div class="col" id="Address"></div>
-    </div>
-    <div class="row py-2">
-        <div class="col">Supervisor:</div>
-        <div class="col" id="Supervisor"></div>
-    </div>
-    <div class="row py-2">
-        <div class="col">Phone:</div>
-        <div class="col" id="Phone"></div>
-    </div>
-    <div class="row py-2">
-        <div class="col">Email:</div>
-        <div class="col" id="Email"></div>
-    </div>
 
-    <div class="row d-flex justify-content-center">
-        <button type="button" class="btn-primary" onclick="Redirect('ViewProducts.html')">View products</button>
-    </div>
+        <div class="col-auto py-3">
+            <button type="button" class="btn btn-secondary" onclick="Redirect('Index.html')">Main page</button>
+        </div>
 
+        <h4 id="Message"></h4>
+
+        <button type="button" class="btn btn-secondary" onclick="Redirect('ModifyStoreInfo.html')">Modify store info</button>
+        <button type="button" class="btn btn-danger" onclick="ShowWarning()">Delete store</button>
+
+        <div class="row py-2">
+            <div class="col" id="WarningText"></div>
+            <div class="col" id="DeleteCol">
+            </div>
+        </div>
+
+        <h3 id="Name"></h3>
+
+        <div class="row py-2">
+            <div class="col">City:</div>
+            <div class="col" id="City"></div>
+        </div>
+        <div class="row py-2">
+            <div class="col">Address:</div>
+            <div class="col" id="Address"></div>
+        </div>
+        <div class="row py-2">
+            <div class="col">Supervisor:</div>
+            <div class="col" id="Supervisor"></div>
+        </div>
+        <div class="row py-2">
+            <div class="col">Phone:</div>
+            <div class="col" id="Phone"></div>
+        </div>
+        <div class="row py-2">
+            <div class="col">Email:</div>
+            <div class="col" id="Email"></div>
+        </div>
+
+        <div class="row">
+            <div>
+                <button type="button" class="btn btn-primary" onclick="Redirect('ViewProducts.html')">View products</button>
+            </div>
+        </div>
+
+        <canvas id="myChart1"></canvas>
+
+    </div>
 
 
     <script>
         let warningShown = false;
         let storeId = "";
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', () => RenderPage(), false);
+
+        async function RenderPage() {
             storeId = localStorage.getItem("StoreId");
             console.log(storeId);
-            GetStoreInfo(storeId);
+            await GetStoreInfo(storeId);
+            let storeData = JSON.parse(localStorage.getItem("StoreAndProducts"));
+
+            console.log(storeData);
+            let productNames = [];
+            let productCount = [];
+
+            let products = Array.from(storeData['products']);
+            console.log(products);
+
+            for (const product of products) {
+                console.log(product);
+                console.log(product["name"]);
+                console.log(product["inStock"]);
+                productNames.push(product["name"]);
+                productCount.push(product["inStock"]);
+            }
+
+            console.log(productNames);
+            console.log(productCount);
+            ProductChart(productNames, productCount, 'Share of the total quantity');
 
             if (!storeId) {
                 document.getElementById("Message").innerHTML = "LocalStorage: No Store id found";
             }
-        });
+        }
 
-        function GetStoreInfo(storeId) {
+        async function GetStoreInfo(storeId) {
             const url = "https://localhost:7233/GetStoreDataWithId?id=" + storeId;
 
-            fetch(url)
+            await fetch(url)
                 .then(data => {
                     if (!data.ok) {
                         document.getElementById('Message').innerHTML = data.status + ': Failed to get store info. Please try again later.';
@@ -105,17 +149,17 @@
         function ShowWarning() {
             if (!warningShown) {
                 document.getElementById("WarningText").innerHTML = "Deleting store will delete all products also. This action is permanent and cannot be undone.";
+
+                var delCol = document.getElementById("DeleteCol");
+                var delButton = document.createElement('input');
+                delButton.type = "button";
+                delButton.className = "btn btn-danger";
+                delButton.value = "I am sure";
+                delButton.onclick = () => { DeleteStore(storeId) };
+                delCol.appendChild(delButton);
+
+                warningShown = true;
             }
-
-            var delCol = document.getElementById("DeleteCol");
-            var delButton = document.createElement('input');
-            delButton.type = "button";
-            delButton.className = "btn btn-danger";
-            delButton.value = "I am sure";
-            delButton.onclick = () => { DeleteStore(storeId) };
-            delCol.appendChild(delButton);
-
-            warningShown = true;
         }
 
         function DeleteStore(storeId) {
@@ -135,7 +179,83 @@
             });
         }
 
-    </script>
+        let chart1 = null;
+        function ProductChart(productNames, productCount, title) {
+            console.log(productNames);
+            console.log(productCount);
+            console.log(title);
 
+            // Colors for the chart.
+            var colors = [];
+            while (colors.length < productNames.length) {
+                do {
+                    var color = Math.floor((Math.random() * 1000000) + 1);
+                } while (colors.indexOf(color) >= 0);
+                colors.push("#" + ("000000" + color.toString(16)).slice(-6));
+            }
+            console.log(colors);
+
+            // Chart
+            let myChart1 = document.getElementById('myChart1').getContext('2d');
+
+            Chart.defaults.global.defaultFontFamily = 'Arial';
+            Chart.defaults.global.defaultFontSize = 12;
+            Chart.defaults.global.defaultFontColor = 'green';
+
+            chart1 = new Chart(myChart1, {
+                type: 'pie',
+                data: {
+                    labels: productNames,
+                    datasets: [{
+                        label: 'Tiedot',
+                        data: productCount,
+                        backgroundColor: colors,
+                        borderWidth: 2,
+                        borderColor: 'white',
+                        hoverBorderWidth: 3,
+                        hoverBorderColor: 'black'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: title,
+                        fontSize: 25
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            fontColor: '#000'
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            top: 0
+                        }
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                var allData = data.datasets[tooltipItem.datasetIndex].data;
+                                var tooltipLabel = data.labels[tooltipItem.index];
+                                var tooltipData = allData[tooltipItem.index];
+                                var total = 0;
+                                for (var i in allData) {
+                                    total += allData[i];
+                                }
+                                var tooltipPercentage = Math.round((tooltipData / total) * 100);
+                                return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    </script>
 </body>
 </html>
