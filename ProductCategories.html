@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="fi" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,9 +18,9 @@
             </div>
             <div class="col-md d-flex d-inline align-self-center justify-content-md-end text-nowrap">
                 <div class="d-flex d-inline">
-                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\fi.png" alt="FI" />
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\fi.png" onclick="ChangeLanguage('fi')" alt="FI" />
                     <div>&emsp;</div>
-                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\gb.png" alt="EN" />
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\gb.png" onclick="ChangeLanguage('en')" alt="EN" />
                     <div>&emsp;</div>
                     <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\dark.png" alt="Light/Dark" />
                 </div>
@@ -31,22 +31,21 @@
             <button type="button" class="btn btn-secondary" onclick="Redirect('Index.html')">Main page</button>
         </div>
 
-        <h4>Product categories</h4>
-        <h4>Add, modify or delete product categories here</h4>
+        <h4 id="productCategories"></h4>
+        <h4 id="categoryInfo"></h4>
         <h4 id="Message"></h4>
 
         <table id="categoryInfo" class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Category Name</th>
-                    <!--<th scope="col">Modify category</th>-->
+                    <th id="categoryName" scope="col"></th>
                 </tr>
             </thead>
             <tbody id="categories">
                 <tr>
                     <td>
-                        <button type="submit" onclick="NewCategory()" class="btn btn-primary">Add New</button>
-                        <input type="text" id="NewCategoryName" placeholder="New Category">
+                        <button type="submit" id="addNew" onclick="NewCategory()" class="btn btn-primary"></button>
+                        <input type="text" id="NewCategoryName">
                     </td>
                 </tr>
             </tbody>
@@ -56,17 +55,23 @@
         const form = document.querySelector('#categoryInfo');
 
         document.addEventListener('DOMContentLoaded', function () {
-            GetAllCategories();
+            const lang = localStorage.getItem("Lang");
+            document.getElementById("productCategories").innerHTML = Translation("ProductCategories", lang);
+            document.getElementById("categoryInfo").innerHTML = Translation("CategoryInfoText", lang);
+            document.getElementById("categoryName").innerHTML = Translation("CategoryName", lang);
+            document.getElementById("addNew").innerHTML = Translation("AddNew", lang);
+            document.getElementById("NewCategoryName").placeholder = Translation("CategoryName", lang);
+            GetAllCategories(lang);
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
             });
         });
 
-        async function GetAllCategories() {
+        async function GetAllCategories(lang) {
             const promise = fetch('https://localhost:7233/GetAllCategories')
                 .then(data => {
                     if (!data.ok) {
-                        document.getElementById('Message').innerHTML = 'Failed to get categories. Please try again later.';
+                        document.getElementById('Message').innerHTML = Translation("CategoryGetFail", lang);
                         throw new Error("Promise chain cancelled");
                     }
                     return data.json();
@@ -74,11 +79,11 @@
                 .then(data => {
                     console.log(data)
                     if (!data) {
-                        document.getElementById('Message').innerHTML = 'There are no categories. Please add new one to continue';
+                        document.getElementById('Message').innerHTML = Translation("CategoryGetNotFound", lang);
                         throw new Error("Promise chain cancelled");
                     }
                     else {
-                        data.forEach((element, index) => CreateCategoryCell(element, index))
+                        data.forEach((element, index) => CreateCategoryCell(element, index, lang))
                     }
 
                 })
@@ -87,7 +92,7 @@
                 }); 
         }
 
-        function CreateCategoryCell(element, index) {
+        function CreateCategoryCell(element, index, lang) {
             console.log(element, index);
             const row = document.getElementById('categories');
             const cell = document.createElement('tr');
@@ -108,7 +113,7 @@
             var submit = document.createElement("input");
             submit.type = "submit";
             submit.className = "btn btn-primary";
-            submit.value = "Modify";
+            submit.value = Translation("Modify", lang);
             console.log("IdNumero:", inputId);
             submit.onclick = () => { Modify(element, inputId) }
             createdCell.appendChild(submit);
@@ -117,7 +122,7 @@
 
             var deleteLabel = document.createElement("label");
             deleteLabel.setAttribute("for", boxId);
-            deleteLabel.textContent = "Delete category?"
+            deleteLabel.textContent = Translation("DeleteCategory", lang);
             createdCell.appendChild(deleteLabel);
 
             var deleteCheckbox = document.createElement("input");
@@ -130,12 +135,13 @@
             var deleteButton = document.createElement("input");
             deleteButton.type = "button";
             deleteButton.className = "btn btn-danger";
-            deleteButton.value = "Delete";
-            deleteButton.onclick = () => { Delete(element["id"], boxId) }
+            deleteButton.value = Translation("Delete", lang);
+            deleteButton.onclick = () => { Delete(element["id"], boxId, lang) }
             createdCell.appendChild(deleteButton);
         }
 
         function NewCategory() {
+            const lang = localStorage.getItem("Lang");
             console.log("Lisääkkö nää uuden?");
             const newCategoryName = document.getElementById("NewCategoryName").value;
 
@@ -149,13 +155,13 @@
                     location.reload();
                 }
                 else {
-                    document.getElementById("Message").innerHTML = response.status + ": Failed to add new category.";
+                    document.getElementById("Message").innerHTML = Translation("CategoryPostFail", lang);
                 }
             });
                 
         }
 
-        function Modify(category, inputId) {
+        function Modify(category, inputId, lang) {
             console.log("Mitä kuuluu kukkuluuruu", category);
             const newName = document.getElementById(inputId).value;
             console.log(newName);
@@ -171,12 +177,12 @@
                     location.reload();
                 }
                 else {
-                    document.getElementById('Message').innerHTML = response.status + ': Failed to modify category.';
+                    document.getElementById('Message').innerHTML = response.status + Translation("CategoryPutFail", lang);
                 }
             });
         }
 
-        function Delete(categoryId, boxId) {
+        function Delete(categoryId, boxId, lang) {
             console.log("Mitä kuuluu kukkuluuruu, lähekkö nää pois?", categoryId, boxId);
             if (!document.getElementById(boxId).checked) {
                 return;
@@ -193,7 +199,7 @@
                     location.reload();
                 }
                 else {
-                    document.getElementById('Message').innerHTML = response.status + ': Failed to delete category.';
+                    document.getElementById('Message').innerHTML = response.status + Translation("CategoryDeleteFail", lang);
                 }
             });
         }
