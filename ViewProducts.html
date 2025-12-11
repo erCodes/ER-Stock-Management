@@ -19,9 +19,9 @@
             </div>
             <div class="col-md d-flex d-inline align-self-center justify-content-md-end text-nowrap">
                 <div class="d-flex d-inline">
-                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\fi.png" alt="FI" />
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\fi.png" onclick="ChangeLanguage('fi')" alt="FI" />
                     <div>&emsp;</div>
-                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\gb.png" alt="EN" />
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\gb.png" onclick="ChangeLanguage('en')" alt="EN" />
                     <div>&emsp;</div>
                     <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\dark.png" alt="Light/Dark" />
                 </div>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="col-auto py-3">
-            <button type="button" class="btn btn-secondary" onclick="Redirect('BrowseStore.html')">Main page</button>
+            <button type="button" id="mainPage" class="btn btn-secondary" onclick="Redirect('BrowseStore.html')"></button>
         </div>
 
         <h3 id="Title"></h3>
@@ -38,19 +38,19 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Products Name</th>
-                    <th scope="col">Amount in stock</th>
-                    <th scope="col">Categories</th>
-                    <th scope="col">Modified on (UTC)</th>
+                    <th scope="col" id="productsNameTitle"></th>
+                    <th scope="col" id="amountInStockTitle"></th>
+                    <th scope="col" id="categoriesTitle"></th>
+                    <th scope="col" id="modifiedTitle"></th>
                 </tr>
             </thead>
             <tbody id="table">
                 <tr>
                     <td>
-                        <input type="button" name="NewProduct" value="New" class="btn btn-primary" onclick="NewProduct()" />
-                        <input type="text" id="NewName" placeholder="Name">
+                        <input type="button" id="newProductButton" name="NewProduct" value="New" class="btn btn-primary" onclick="NewProduct()" />
+                        <input type="text" id="NewName">
                     </td>
-                    <td><input type="text" id="NewAmount" placeholder="Amount"></td>
+                    <td><input type="text" id="NewAmount"></td>
                     <td id="NewCategories"></td>
                 </tr>
             </tbody>
@@ -61,10 +61,23 @@
         let storeAndData;
         let categories = [];
         let counter = 0;
+        let lang = "";
 
         document.addEventListener('DOMContentLoaded', () => RenderPage(), false);
 
         async function RenderPage() {
+            lang = localStorage.getItem("Lang");
+
+            document.getElementById("productsNameTitle").innerHTML = Translation("ProductsNameTitle", lang);
+            document.getElementById("amountInStockTitle").innerHTML = Translation("AmountInStockTitle", lang);
+            document.getElementById("categoriesTitle").innerHTML = Translation("CategoriesTitle", lang);
+            document.getElementById("modifiedTitle").innerHTML = Translation("ModifiedTitle", lang);
+            document.getElementById("mainPage").innerHTML = Translation("MainPage", lang);
+            document.getElementById("newProductButton").setAttribute("value", Translation("AddNew", lang));
+            document.getElementById("NewName").setAttribute("placeholder", Translation("ProductsName", lang));
+            document.getElementById("NewAmount").setAttribute("placeholder", Translation("AmountInStock", lang));
+
+
             storeAndData = JSON.parse(localStorage.getItem("StoreAndProducts"));
             console.log(storeAndData);
             await GetAllCategories();
@@ -95,14 +108,14 @@
             const deleteButton = document.createElement('button');
             deleteButton.type = 'button';
             deleteButton.className = 'btn btn-danger';
-            deleteButton.innerHTML = 'Delete';
+            deleteButton.innerHTML = Translation("Delete", lang);
             deleteButton.onclick = () => { DeleteProduct(storeId, element['id']) };
             modifyCell.appendChild(deleteButton);
 
             const modifyButton = document.createElement('button');
             modifyButton.type = 'button';
             modifyButton.className = 'btn btn-primary';
-            modifyButton.innerHTML = 'Modify';
+            modifyButton.innerHTML = Translation("Modify", lang);
             modifyButton.onclick = () => { ModifyProduct(storeId, element, index) };
             modifyCell.appendChild(modifyButton);
 
@@ -189,7 +202,7 @@
                 const promise = await fetch('https://localhost:7233/GetAllCategories');
 
                 if (!promise.ok) {
-                    document.getElementById('Message').innerHTML = 'Failed to get categories. Please try again later.';
+                    document.getElementById('Message').innerHTML = Translation("ErrorMessage", lang);
                 }
 
                 const data = await promise.json();
@@ -240,12 +253,11 @@
                 body: json
             }).then(response => {
                 if (response.ok) {
-                    //location.reload();
                     console.log("LÄPI MENI");
                     GetUpdatedStoreInfo();
                 }
                 else {
-                    document.getElementById('Message').innerHTML = response.status + ': Failed to add new product';
+                    document.getElementById('Message').innerHTML = Translation("ErrorMessage", lang);
                 }
             });
         }
@@ -257,7 +269,7 @@
                 const promise = await fetch(url);
 
                 if (!promise.ok) {
-                    document.getElementById('Message').innerHTML = 'Failed to get Store. Please try again later.';
+                    document.getElementById('Message').innerHTML = Translation("ErrorMessage", lang);
                 }
 
                 const data = await promise.json();
@@ -317,7 +329,7 @@
                     GetUpdatedStoreInfo();
                 }
                 else {
-                    document.getElementById('Message').innerHTML = response.status + ': Failed to modify product.';
+                    document.getElementById('Message').innerHTML = Translation("Modify", lang);
                 }
             });
         }
@@ -330,7 +342,7 @@
                 headers: { 'Content-Type': 'application/json' },
             }).then(response => {
                 if (!response.ok) {
-                    document.getElementById('Message').innerHTML = response.status + ': Failed to delete product.';
+                    document.getElementById('Message').innerHTML = Translation("ErrorMessage", lang);
                 }
                 else {
                     GetUpdatedStoreInfo();

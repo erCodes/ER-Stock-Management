@@ -66,12 +66,13 @@ function Translation(key, lang) {
     en.set("IAmSure", "I am sure");
     en.set("ViewProductsButton", "View products");
     en.set("ProductChart", "Share of the total quantity");
-    en.set("", "");
-    en.set("", "");
-    en.set("", "");
-    en.set("", "");
-    en.set("", "");
-    en.set("", "");
+    // View Products
+    en.set("ProductsNameTitle", "Products Name");
+    en.set("AmountInStockTitle", "Amount in stock");
+    en.set("CategoriesTitle", "Categories");
+    en.set("ModifiedTitle", "Modified on (UTC)");
+    en.set("ProductsName", "Name");
+    en.set("AmountInStock", "Amount");
     en.set("", "");
     en.set("", "");
     en.set("", "");
@@ -116,12 +117,13 @@ function Translation(key, lang) {
     fi.set("IAmSure", "Olen varma");
     fi.set("ViewProductsButton", "Selaa tuotteita");
     fi.set("ProductChart", "Osuus kokonaismäärästä");
-    fi.set("", "");
-    fi.set("", "");
-    fi.set("", "");
-    fi.set("", "");
-    fi.set("", "");
-    fi.set("", "");
+    // View Products
+    fi.set("ProductsNameTitle", "Tuotteen nimi");
+    fi.set("AmountInStockTitle", "Määrä varastossa");
+    fi.set("CategoriesTitle", "Tuotekategoriat");
+    fi.set("ModifiedTitle", "Muokattu (UTC)");
+    fi.set("ProductsName", "Nimi");
+    fi.set("AmountInStock", "Määrä");
     fi.set("", "");
     fi.set("", "");
     fi.set("", "");
