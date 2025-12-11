@@ -54,10 +54,22 @@ function Translation(key, lang) {
     en.set("Supervisor", "Supervisor");
     en.set("Phone", "Phone");
     en.set("Email", "Email");
+    en.set("ErrorMessage", "Error: Request failed");
     // Add store
     en.set("AddNewStoreTitle", "Add new store");
     en.set("AddStorePost", "Store added");
     en.set("AddStorePostFail", "Failed to add new store");
+    // BrowseStore
+    en.set("ModifyStoreInfo", "Modify store info");
+    en.set("DeleteStore", "Delete store");
+    en.set("DeleteWarningText", "Deleting store will delete all products also. This action is permanent and cannot be undone.");
+    en.set("IAmSure", "I am sure");
+    en.set("ViewProductsButton", "View products");
+    en.set("ProductChart", "Share of the total quantity");
+    en.set("", "");
+    en.set("", "");
+    en.set("", "");
+    en.set("", "");
     en.set("", "");
     en.set("", "");
     en.set("", "");
@@ -92,15 +104,31 @@ function Translation(key, lang) {
     fi.set("Supervisor", "Esimies");
     fi.set("Phone", "Puhelin");
     fi.set("Email", "Sähköposti");
+    fi.set("ErrorMessage", "Virhe: Pyyntö epäonnistui");
     // Add store
     fi.set("AddNewStoreTitle", "Lisää uusi kauppa");
     fi.set("AddStorePost", "Kauppa lisätty");
     fi.set("AddStorePostFail", "Kaupan lisääminen epäonnistui");
+    // BrowseStore
+    fi.set("ModifyStoreInfo", "Muokkaa kaupan tietoja");
+    fi.set("DeleteStore", "Poista kauppa");
+    fi.set("DeleteWarningText", "Kaupan poistaminen poistaa myös kaikki tuotteet. Tämä toiminto on pysyvä, eikä sitä voi peruuttaa.");
+    fi.set("IAmSure", "Olen varma");
+    fi.set("ViewProductsButton", "Selaa tuotteita");
+    fi.set("ProductChart", "Osuus kokonaismäärästä");
+    fi.set("", "");
+    fi.set("", "");
+    fi.set("", "");
+    fi.set("", "");
+    fi.set("", "");
+    fi.set("", "");
     fi.set("", "");
     fi.set("", "");
     fi.set("", "");
     fi.set("", "");
 
+
+    
 
     if (lang == "en") {
         const enTranslation = en.get(key);
