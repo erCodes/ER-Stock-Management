@@ -35,6 +35,7 @@ function Translation(key, lang) {
     en.set("StoresText", "Select Store to view its products");
     en.set("StoresTextNotFound", "No stores found. Add new one to continue.");
     // ProductCategories
+    en.set("MainPage", "Main page")
     en.set("CategoryInfoText", "Add, modify or delete product categories here");
     en.set("CategoryGetFail", "Failed to get categories.");
     en.set("CategoryGetNotFound", "There are no categories. Please add new one to continue");
@@ -46,8 +47,23 @@ function Translation(key, lang) {
     en.set("CategoryDeleteFail", "Failed to delete category");
     en.set("CategoryName", "Category Name");
     en.set("AddNew", "Add new");
+    // Common form labels
+    en.set("Name", "Store name");
+    en.set("City", "City");
+    en.set("Address", "Address");
+    en.set("Supervisor", "Supervisor");
+    en.set("Phone", "Phone");
+    en.set("Email", "Email");
+    // Add store
+    en.set("AddNewStoreTitle", "Add new store");
+    en.set("AddStorePost", "Store added");
+    en.set("AddStorePostFail", "Failed to add new store");
     en.set("", "");
     en.set("", "");
+    en.set("", "");
+    en.set("", "");
+    en.set("", "");
+
 
 
     let fi = new Map();
@@ -57,6 +73,7 @@ function Translation(key, lang) {
     fi.set("StoresText", "Valitse kauppa katsoaksesi sen tuotteita tai lisää uusi");
     fi.set("StoresTextNotFound", "Kauppoja ei löytynyt. Lisää uusi jatkaaksesi.");
     // ProductCategories
+    fi.set("MainPage", "Pääsivulle");
     fi.set("CategoryInfoText", "Lisää, muokkaa tai poista tuotekategorioita täällä");
     fi.set("CategoryGetFail", "Ei onnistuttu hakemaan kategorioita");
     fi.set("CategoryGetNotFound", "Kategorioita ei ole. Lisää uusi jatkaaksesi.");
@@ -68,6 +85,20 @@ function Translation(key, lang) {
     fi.set("CategoryDeleteFail", "Ei onnistuttu oistamaan kategoriaa");
     fi.set("CategoryName", "Kategorian Nimi");
     fi.set("AddNew", "Lisää uusi");
+    // Common form labels
+    fi.set("Name", "Kaupan nimi");
+    fi.set("City", "Kaupunki");
+    fi.set("Address", "Osoite");
+    fi.set("Supervisor", "Esimies");
+    fi.set("Phone", "Puhelin");
+    fi.set("Email", "Sähköposti");
+    // Add store
+    fi.set("AddNewStoreTitle", "Lisää uusi kauppa");
+    fi.set("AddStorePost", "Kauppa lisätty");
+    fi.set("AddStorePostFail", "Kaupan lisääminen epäonnistui");
+    fi.set("", "");
+    fi.set("", "");
+    fi.set("", "");
     fi.set("", "");
 
 

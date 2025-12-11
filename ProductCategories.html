@@ -28,7 +28,7 @@
         </div>
 
         <div class="col-auto py-3">
-            <button type="button" class="btn btn-secondary" onclick="Redirect('Index.html')">Main page</button>
+            <button type="button" id="mainPage" class="btn btn-secondary" onclick="Redirect('Index.html')"></button>
         </div>
 
         <h4 id="productCategories"></h4>
@@ -56,6 +56,7 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             const lang = localStorage.getItem("Lang");
+            document.getElementById("mainPage").innerHTML = Translation("MainPage", lang);
             document.getElementById("productCategories").innerHTML = Translation("ProductCategories", lang);
             document.getElementById("categoryInfo").innerHTML = Translation("CategoryInfoText", lang);
             document.getElementById("categoryName").innerHTML = Translation("CategoryName", lang);

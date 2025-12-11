@@ -18,9 +18,9 @@
             </div>
             <div class="col-md d-flex d-inline align-self-center justify-content-md-end text-nowrap">
                 <div class="d-flex d-inline">
-                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\fi.png" alt="FI" />
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\fi.png" onclick="ChangeLanguage('fi')" alt="FI" />
                     <div>&emsp;</div>
-                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\gb.png" alt="EN" />
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\gb.png" onclick="ChangeLanguage('en')" alt="EN" />
                     <div>&emsp;</div>
                     <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\dark.png" alt="Light/Dark" />
                 </div>
@@ -28,64 +28,64 @@
         </div>
 
         <div class="col-auto py-3">
-            <button type="button" class="btn btn-secondary" onclick="Redirect('Index.html')">Main page</button>
+            <button type="button" id="mainPage" class="btn btn-secondary" onclick="Redirect('Index.html')"></button>
         </div>
 
-        <h4>Add new store</h4>
+        <h4 id="addNewStoreTitle"></h4>
 
         <form id="storeinfo">
             <input type="text" class="form-control" id="Id" name="Id" hidden>
             <div class="row py-2">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="Name">Store Name</label>
-                        <input type="text" class="form-control" id="Name" name="Name" placeholder="Store Name" required>
+                        <label id="nameLabel" for="Name"></label>
+                        <input type="text" class="form-control" id="Name" name="Name" required>
                     </div>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="City">City</label>
-                        <input type="text" class="form-control" id="City" name="City" placeholder="City" required>
+                        <label id="cityLabel" for="City"></label>
+                        <input type="text" class="form-control" id="City" name="City" required>
                     </div>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="Address">Address</label>
-                        <input type="text" class="form-control" id="Address" name="Address" placeholder="Address">
+                        <label id="addressLabel" for="Address"></label>
+                        <input type="text" class="form-control" id="Address" name="Address" required>
                     </div>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="Supervisor">Supervisor</label>
-                        <input type="text" class="form-control" id="Supervisor" name="Supervisor" placeholder="Supervisor">
+                        <label id="supervisorLabel" for="Supervisor"></label>
+                        <input type="text" class="form-control" id="Supervisor" name="Supervisor" required>
                     </div>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="Phone">Phone number</label>
-                        <input type="text" class="form-control" id="Phone" name="Phone" placeholder="Phone">
+                        <label id="phoneLabel" for="Phone"></label>
+                        <input type="text" class="form-control" id="Phone" name="Phone" required>
                     </div>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="Email">Email</label>
-                        <input type="text" class="form-control" id="Email" name="Email" placeholder="Email">
+                        <label id="emailLabel" for="Email"></label>
+                        <input type="text" class="form-control" id="Email" name="Email" required>
                     </div>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col-6">
-                    <input type="submit" value="submit" class="btn btn-primary">
+                    <input type="submit" id="submitButton" class="btn btn-primary">
                 </div>
             </div>
             <div class="row py-2">
@@ -99,13 +99,25 @@
             const form = document.querySelector('#storeinfo');
 
             document.addEventListener('DOMContentLoaded', function () {
+                const lang = localStorage.getItem("Lang");
+
+                document.getElementById("addNewStoreTitle").innerHTML = Translation("AddNewStoreTitle", lang);
+                document.getElementById("mainPage").innerHTML = Translation("MainPage", lang);
+                document.getElementById("nameLabel").innerHTML = Translation("Name", lang);
+                document.getElementById("cityLabel").innerHTML = Translation("City", lang);
+                document.getElementById("addressLabel").innerHTML = Translation("Address", lang);
+                document.getElementById("supervisorLabel").innerHTML = Translation("Supervisor", lang);
+                document.getElementById("phoneLabel").innerHTML = Translation("Phone", lang);
+                document.getElementById("emailLabel").innerHTML = Translation("Email", lang);
+                document.getElementById("submitButton").innerHTML = Translation("AddNew", lang);
+
                 form.addEventListener('submit', (event) => {
                     event.preventDefault();
-                    AddStore();
+                    AddStore(lang);
                 });
             });
 
-            async function AddStore() {
+            async function AddStore(lang) {
                 const formData = new FormData(form);
 
                 const jsonData = JSON.stringify(Object.fromEntries(formData));
@@ -117,10 +129,10 @@
                     body: jsonData
                 }).then(response => {
                     if (response.ok) {
-                        document.getElementById('Message').innerHTML = 'Store added.';
+                        document.getElementById('Message').innerHTML = Translation("AddStorePost", lang);
                     }
                     else {
-                        document.getElementById('Message').innerHTML = response.status + ': Failed to add new store';
+                        document.getElementById('Message').innerHTML = Translation("AddStorePostFail", lang);
                     }
                 });
             }
