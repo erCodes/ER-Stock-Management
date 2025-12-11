@@ -1,15 +1,13 @@
 ﻿<!DOCTYPE html>
-
-<html lang="fi" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ER-Stock Management</title>
     <base href="/" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <!--<link rel="stylesheet" href="css/app.css" />-->
     <!--<link rel="icon" type="image/png" href="favicon.png" />-->
-    <script type="text/javascript" src="C:\Users\eetur\source\repos\ER-Stock Management\CommonFunctions.js"></script>
+    <script src="C:\Users\eetur\source\repos\ER-Stock Management\CommonFunctions.js" type="text/javascript" charset="utf-8"></script>
     <link href="C:\Users\eetur\source\repos\ER-Stock Management\Default.css" rel="stylesheet" />
     <link href="C:\Users\eetur\source\repos\ER-Stock Management\Darkmode.css" rel="stylesheet" />
 </head>
@@ -42,33 +40,36 @@
             </div>
 
             <div class="col-auto py-3">
-                <button type="button" class="btn btn-secondary" onclick="AddStore()">Add store</button>
+                <button type="button" id="addStore" class="btn btn-secondary" onclick="Redirect('AddStore.html')"></button>
             </div>
             <div class="col-auto py-3">
-                <button type="button" class="btn btn-secondary" onclick="ProductCategories()">Product Categories</button>
+                <button type="button" id="productCategories" class="btn btn-secondary" onclick="Redirect('ProductCategories.html')"></button>
             </div>
         </div>
     </div>
 
 
 
-    <script>
+    <script type="text/javascript" charset="utf-8">
         let stores = null;
 
         window.addEventListener('load', function () {
             console.log('Loaded')
             localStorage.clear();
+            document.getElementById('addStore').innerHTML = Translation("AddStore");
+            document.getElementById('productCategories').innerHTML = Translation("ProductCategories");
+
 
             const response = fetch('https://localhost:7233/AllBasicData')
                 .then(data => data.json())
                 .then(data => {
                     console.log(data)
                     if (data) {
-                        document.getElementById('StoresText').innerHTML = 'Select Store to view its products.';
+                        document.getElementById('StoresText').innerHTML = Translation("StoresText");
                         data.forEach((element) => CreateStoreButton(element))
                     }
                     else {
-                        document.getElementById('StoresText').innerHTML = 'No stores found. Add new one to continue.';
+                        document.getElementById('StoresText').innerHTML = Translation("StoresTextNotFound");
                     }
                 })
                 .catch((error) => {
@@ -95,23 +96,11 @@
             //button1.setAttribute('type', 'button');
             //button1.setAttribute('class', 'btn-primary');
             //button1.setAttribute('value', item.name);
-            button1.onclick = () => { BrowseStore(item.id) }
+            button1.onclick = () => { Redirect('BrowseStore.html', 'StoreId', item.id) }
             //button1.innerHTML = item.name;
 
             buttons.appendChild(button1);
             console.log(button1);
-        }
-
-        function BrowseStore(id) {
-            Redirect('BrowseStore.html', 'StoreId', id);
-        }
-
-        function AddStore() {
-            Redirect('AddStore.html');
-        }
-
-        function ProductCategories() {
-            Redirect('ProductCategories.html');
         }
     </script>
 </body>
