@@ -72,7 +72,7 @@
             const promise = fetch('https://localhost:7233/GetAllCategories')
                 .then(data => {
                     if (!data.ok) {
-                        document.getElementById('Message').innerHTML = Translation("CategoryGetFail", lang);
+                        document.getElementById('Message').innerHTML = Translation("ErrorMessage", lang);
                         throw new Error("Promise chain cancelled");
                     }
                     return data.json();
@@ -156,7 +156,7 @@
                     location.reload();
                 }
                 else {
-                    document.getElementById("Message").innerHTML = Translation("CategoryPostFail", lang);
+                    document.getElementById("Message").innerHTML = Translation("ErrorMessage", lang);
                 }
             });
                 
@@ -178,7 +178,7 @@
                     location.reload();
                 }
                 else {
-                    document.getElementById('Message').innerHTML = response.status + Translation("CategoryPutFail", lang);
+                    document.getElementById('Message').innerHTML = Translation("ErrorMessage", lang);
                 }
             });
         }
@@ -200,7 +200,7 @@
                     location.reload();
                 }
                 else {
-                    document.getElementById('Message').innerHTML = response.status + Translation("CategoryDeleteFail", lang);
+                    document.getElementById('Message').innerHTML = Translation("ErrorMessage", lang);
                 }
             });
         }

@@ -37,14 +37,10 @@ function Translation(key, lang) {
     // ProductCategories
     en.set("MainPage", "Main page")
     en.set("CategoryInfoText", "Add, modify or delete product categories here");
-    en.set("CategoryGetFail", "Failed to get categories.");
     en.set("CategoryGetNotFound", "There are no categories. Please add new one to continue");
     en.set("Modify", "Modify");
     en.set("DeleteCategory", "Delete category?");
     en.set("Delete", "Delete");
-    en.set("CategoryPostFail", "Failed to add new category");
-    en.set("CategoryPutFail", "Failed to modify category");
-    en.set("CategoryDeleteFail", "Failed to delete category");
     en.set("CategoryName", "Category Name");
     en.set("AddNew", "Add new");
     // Common form labels
@@ -58,7 +54,6 @@ function Translation(key, lang) {
     // Add store
     en.set("AddNewStoreTitle", "Add new store");
     en.set("AddStorePost", "Store added");
-    en.set("AddStorePostFail", "Failed to add new store");
     // BrowseStore
     en.set("ModifyStoreInfo", "Modify store info");
     en.set("DeleteStore", "Delete store");
@@ -73,12 +68,9 @@ function Translation(key, lang) {
     en.set("ModifiedTitle", "Modified on (UTC)");
     en.set("ProductsName", "Name");
     en.set("AmountInStock", "Amount");
-    en.set("", "");
-    en.set("", "");
-    en.set("", "");
-
-
-
+    // Modify Store Info
+    en.set("StoreModified", "Store modified");
+    
     let fi = new Map();
     // Index
     fi.set("AddStore", "Lisää kauppa");
@@ -88,14 +80,10 @@ function Translation(key, lang) {
     // ProductCategories
     fi.set("MainPage", "Pääsivulle");
     fi.set("CategoryInfoText", "Lisää, muokkaa tai poista tuotekategorioita täällä");
-    fi.set("CategoryGetFail", "Ei onnistuttu hakemaan kategorioita");
     fi.set("CategoryGetNotFound", "Kategorioita ei ole. Lisää uusi jatkaaksesi.");
     fi.set("Modify", "Muokkaa");
     fi.set("DeleteCategory", "Poista kategoria?");
     fi.set("Delete", "Poista");
-    fi.set("CategoryPostFail", "Ei onnistuttu lisäämään kategoriaa");
-    fi.set("CategoryPutFail", "Ei onnistuttu muokkaamaan kategoriaa");
-    fi.set("CategoryDeleteFail", "Ei onnistuttu oistamaan kategoriaa");
     fi.set("CategoryName", "Kategorian Nimi");
     fi.set("AddNew", "Lisää uusi");
     // Common form labels
@@ -109,7 +97,6 @@ function Translation(key, lang) {
     // Add store
     fi.set("AddNewStoreTitle", "Lisää uusi kauppa");
     fi.set("AddStorePost", "Kauppa lisätty");
-    fi.set("AddStorePostFail", "Kaupan lisääminen epäonnistui");
     // BrowseStore
     fi.set("ModifyStoreInfo", "Muokkaa kaupan tietoja");
     fi.set("DeleteStore", "Poista kauppa");
@@ -124,13 +111,9 @@ function Translation(key, lang) {
     fi.set("ModifiedTitle", "Muokattu (UTC)");
     fi.set("ProductsName", "Nimi");
     fi.set("AmountInStock", "Määrä");
-    fi.set("", "");
-    fi.set("", "");
-    fi.set("", "");
-    fi.set("", "");
+    // Modify Store Info
+    fi.set("StoreModified", "Kaupan tiedot on muutettu");
 
-
-    
 
     if (lang == "en") {
         const enTranslation = en.get(key);

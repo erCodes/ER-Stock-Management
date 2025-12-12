@@ -109,7 +109,7 @@
                 document.getElementById("supervisorLabel").innerHTML = Translation("Supervisor", lang);
                 document.getElementById("phoneLabel").innerHTML = Translation("Phone", lang);
                 document.getElementById("emailLabel").innerHTML = Translation("Email", lang);
-                document.getElementById("submitButton").innerHTML = Translation("AddNew", lang);
+                document.getElementById("submitButton").value = Translation("AddNew", lang);
 
                 form.addEventListener('submit', (event) => {
                     event.preventDefault();
@@ -132,7 +132,7 @@
                         document.getElementById('Message').innerHTML = Translation("AddStorePost", lang);
                     }
                     else {
-                        document.getElementById('Message').innerHTML = Translation("AddStorePostFail", lang);
+                        document.getElementById('Message').innerHTML = Translation("ErrorMessage", lang);
                     }
                 });
             }
