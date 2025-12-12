@@ -47,7 +47,6 @@ namespace ER_Stock_Management_DataLibrary
             Email = email;
         }
 
-        // Remove this
         public void CleanWhitespaces()
         {
             Id.TrimNullSafe();

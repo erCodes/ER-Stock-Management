@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSS", "CSS", "{2B3EF2BE-6A7
 		Default.css = Default.css
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ER-Stock Management-Tests", "ER-Stock Management-Tests\ER-Stock Management-Tests.csproj", "{6E0513D6-3455-4477-8AAC-A41A97B934E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{7772F3A5-730D-4EC9-8A3A-86EA2ADDFBF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7772F3A5-730D-4EC9-8A3A-86EA2ADDFBF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7772F3A5-730D-4EC9-8A3A-86EA2ADDFBF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E0513D6-3455-4477-8AAC-A41A97B934E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E0513D6-3455-4477-8AAC-A41A97B934E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E0513D6-3455-4477-8AAC-A41A97B934E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E0513D6-3455-4477-8AAC-A41A97B934E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
