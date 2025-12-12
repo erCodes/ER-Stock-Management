@@ -9,11 +9,17 @@ namespace ER_Stock_Management_DataLibrary
     {
         [Key]
         public string? Id { get; set; }
+        [MaxLength(50)]
         public required string Name { get; set; }
+        [MaxLength(50)]
         public required string City { get; set; }
+        [MaxLength(100)]
         public string? Address { get; set; }
+        [MaxLength(75)]
         public string? Supervisor { get; set; }
+        [MaxLength(20)]
         public string? Phone { get; set; }
+        [MaxLength(254)]
         public string? Email { get; set; }
         public List<Product>? Products { get; set; } = [];
 

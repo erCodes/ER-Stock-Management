@@ -13,6 +13,7 @@ namespace ER_Stock_Management_DataLibrary
     {
         [Key]
         public required string Id { get; set; } = Guid.NewGuid().ToString();
+        [MaxLength(50)]
         public required string Name { get; set; } = name;
     }
 }

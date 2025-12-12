@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ER_Stock_Management_DataLibrary
 {
+    // Obsolete with blazor UI
     [method: SetsRequiredMembers]
     public class ModifiedProductCategory(ProductCategory original, string? newName = null)
     {

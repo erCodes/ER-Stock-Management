@@ -44,7 +44,7 @@
                 <tr>
                     <td>
                         <button type="submit" id="addNew" onclick="NewCategory()" class="btn btn-primary"></button>
-                        <input type="text" id="NewCategoryName">
+                        <input type="text" id="NewCategoryName" maxlength="50">
                     </td>
                 </tr>
             </tbody>
@@ -109,6 +109,7 @@
             input.value = element["name"];
             input.placeholder = element["name"];
             input.id = inputId;
+            input.maxLength = 50;
             createdCell.appendChild(input);
 
             var submit = document.createElement("input");

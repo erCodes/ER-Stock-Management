@@ -13,6 +13,7 @@ namespace ER_Stock_Management_DataLibrary
     {
         [Key]
         public required string Id { get; set; }
+        [MaxLength(100)]
         public required string Name { get; set; }
         public required List<string> CategoryIds { get; set; }
         public required int InStock { get; set; }

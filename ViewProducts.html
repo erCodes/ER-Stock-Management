@@ -47,7 +47,7 @@
                 <tr>
                     <td>
                         <input type="button" id="newProductButton" name="NewProduct" value="New" class="btn btn-primary" onclick="NewProduct()" />
-                        <input type="text" id="NewName">
+                        <input type="text" id="NewName" maxlength="50">
                     </td>
                     <td><input type="text" id="NewAmount"></td>
                     <td id="NewCategories"></td>
@@ -121,6 +121,7 @@
             productName.type = 'text';
             productName.id = "ProductName" + index;
             productName.value = element['name'];
+            productName.maxLength = 100;
             modifyCell.appendChild(productName);
 
             const amountCell = document.createElement('td');
