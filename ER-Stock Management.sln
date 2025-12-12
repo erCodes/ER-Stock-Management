@@ -27,7 +27,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ER-Stock Management-UI", "E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSS", "CSS", "{2B3EF2BE-6A70-4AAE-BB7E-62B70D5158ED}"
 	ProjectSection(SolutionItems) = preProject
-		Darkmode.css = Darkmode.css
 		Default.css = Default.css
 	EndProjectSection
 EndProject

@@ -26,6 +26,35 @@ function ChangeLanguage(lang) {
     location.reload();
 }
 
+function SetDarkmode() {
+    const current = localStorage.getItem("Mode");
+    if (current == "Light") {
+        localStorage.setItem("Mode", "Dark")
+    }
+
+    else if (current == "Dark") {
+        localStorage.setItem("Mode", "Light")
+    }
+
+    document.body.classList.toggle("dark-mode");
+}
+
+function SetMode() {
+    if (!localStorage.getItem("Mode")) {
+        localStorage.setItem("Mode", "Light")
+    }
+}
+
+function CheckMode() {
+    const current = localStorage.getItem("Mode");
+    if (current == "Light") {
+        return;
+    }
+
+    else if (current == "Dark") {
+        document.body.classList.toggle("dark-mode");
+    }
+}
 
 function Translation(key, lang) {
     let en = new Map();

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="C:\Users\eetur\source\repos\ER-Stock Management\Default.css" rel="stylesheet" />
-    <link href="C:\Users\eetur\source\repos\ER-Stock Management\Darkmode.css" rel="stylesheet" />
     <script type="text/javascript" src="C:\Users\eetur\source\repos\ER-Stock Management\CommonFunctions.js"></script>
     <title>ER-Stock Management Modify Store Info</title>
 </head>
@@ -22,7 +21,7 @@
                     <div>&emsp;</div>
                     <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\gb.png" onclick="ChangeLanguage('en')" alt="EN" />
                     <div>&emsp;</div>
-                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\dark.png" alt="Light/Dark" />
+                    <img class="icons" src="C:\Users\eetur\source\repos\ER-Stock Management\dark.png" onclick="SetDarkmode()" alt="Light/Dark" />
                 </div>
             </div>
         </div>
@@ -109,6 +108,7 @@
         async function RenderPage() {
             const storeData = JSON.parse(localStorage.getItem('StoreAndProducts'));
             lang = localStorage.getItem("Lang");
+            await CheckMode();
 
             document.getElementById("mainPage").innerHTML = Translation("MainPage", lang);
             document.getElementById("modifyStoreInfo").innerHTML = Translation("ModifyStoreInfo", lang);

@@ -1,4 +1,19 @@
-﻿.icons {
-    height: 25px;
+﻿body {
+    background-color: white;
+    color: black;
+}
+
+.icons {
+    height: 30px;
     width: auto;
+}
+
+.dark-mode {
+    background-color: black;
+    color: white;
+}
+
+.darker-form {
+    background-color: rgb(33, 37, 41);
+    color: white;
 }
