@@ -77,12 +77,9 @@
             document.getElementById("NewName").setAttribute("placeholder", Translation("ProductsName", lang));
             document.getElementById("NewAmount").setAttribute("placeholder", Translation("AmountInStock", lang));
 
-
             storeAndData = JSON.parse(localStorage.getItem("StoreAndProducts"));
-            console.log(storeAndData);
             await GetAllCategories();
             categories = JSON.parse(localStorage.getItem("Categories"));
-            console.log(categories);
 
             await NewCategoryLabels();
 
@@ -151,7 +148,6 @@
                     catCheckbox.value = entry['id'];
 
                     const categoryIds = Array.from(element['categoryIds']);
-                    console.log(categoryIds);
 
                     if (categoryIds.length != 0) {
                         for (const id of categoryIds) {
@@ -189,7 +185,6 @@
                 catCheckbox.type = "checkbox";
                 catCheckbox.className = "form-check-input";
                 catCheckbox.id = "NewCat" + newCatCounter;
-                console.log(entry['id']);
                 catCheckbox.value = entry['id'];
 
                 newCategories.appendChild(catCheckbox);
@@ -206,7 +201,6 @@
                 }
 
                 const data = await promise.json();
-                console.log(data);
                 localStorage.setItem('Categories', JSON.stringify(data));
             }
 
@@ -218,25 +212,20 @@
         async function NewProduct() {
             const storeId = localStorage.getItem("StoreId");
             const name = document.getElementById("NewName").value;
-            console.log(name);
             const amount = document.getElementById("NewAmount").value;
-            console.log(amount);
 
             let categoryIds = [];
 
             var divContent = document.getElementById('NewCategories').children;
-            console.log(divContent)
             for (const entry of divContent) {
 
                 if (entry.className == 'form-check-input') {
-                    console.log(entry.className);
                     if (entry.checked) {
-                        console.log(entry.value)
                         categoryIds.push(entry.value);
                     }
                 }
             }
-            console.log(categoryIds);
+
             var jsonObject = {
                 storeid: storeId,
                 productid: '',
@@ -253,7 +242,6 @@
                 body: json
             }).then(response => {
                 if (response.ok) {
-                    console.log("LÄPI MENI");
                     GetUpdatedStoreInfo();
                 }
                 else {
@@ -273,9 +261,7 @@
                 }
 
                 const data = await promise.json();
-                console.log(data);
                 localStorage.setItem('StoreAndProducts', JSON.stringify(data));
-                console.log("STORE DATA UPDATED")
                 location.reload();
             }
 
@@ -286,24 +272,18 @@
 
         function ModifyProduct(storeId, element, index) {
             let categoryIds = [];
-            console.log("Mitä kuuluu kukkuluuruu", storeId, element, index);
 
             var divContent = document.getElementById('categoryCell' + index).children;
-            console.log(divContent);
             for (const entry of divContent) {
                 if (entry.className == 'form-check-input') {
-                    console.log(entry.className);
                     if (entry.checked) {
-                        console.log(entry.value)
                         categoryIds.push(entry.value);
                     }
                 }
             }
 
             const newName = document.getElementById('ProductName' + index).value;
-            console.log(newName);
             const newAmount = document.getElementById('Amount' + index).value;
-            console.log(newAmount);
 
             var jsonObject = {
                 storeid: storeId,
@@ -318,14 +298,12 @@
             //let queryString = new URLSearchParams(jsonObject).toString();
             const url = "https://localhost:7233/ModifyProduct";
 
-            console.log(jsonObject);
             fetch(url, {
                 method: 'PUT',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                 body: json
             }).then(response => {
                 if (response.ok) {
-                    console.log("LÄPI MENI");
                     GetUpdatedStoreInfo();
                 }
                 else {

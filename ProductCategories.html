@@ -62,6 +62,7 @@
             document.getElementById("categoryName").innerHTML = Translation("CategoryName", lang);
             document.getElementById("addNew").innerHTML = Translation("AddNew", lang);
             document.getElementById("NewCategoryName").placeholder = Translation("CategoryName", lang);
+
             GetAllCategories(lang);
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
@@ -78,7 +79,6 @@
                     return data.json();
                 })
                 .then(data => {
-                    console.log(data)
                     if (!data) {
                         document.getElementById('Message').innerHTML = Translation("CategoryGetNotFound", lang);
                         throw new Error("Promise chain cancelled");
@@ -94,7 +94,6 @@
         }
 
         function CreateCategoryCell(element, index, lang) {
-            console.log(element, index);
             const row = document.getElementById('categories');
             const cell = document.createElement('tr');
             const cellId = 'category' + index;
@@ -115,7 +114,6 @@
             submit.type = "submit";
             submit.className = "btn btn-primary";
             submit.value = Translation("Modify", lang);
-            console.log("IdNumero:", inputId);
             submit.onclick = () => { Modify(element, inputId) }
             createdCell.appendChild(submit);
 
@@ -143,7 +141,6 @@
 
         function NewCategory() {
             const lang = localStorage.getItem("Lang");
-            console.log("Lisääkkö nää uuden?");
             const newCategoryName = document.getElementById("NewCategoryName").value;
 
             const url = "https://localhost:7233/NewCategory?name=" + newCategoryName;
@@ -163,12 +160,9 @@
         }
 
         function Modify(category, inputId, lang) {
-            console.log("Mitä kuuluu kukkuluuruu", category);
             const newName = document.getElementById(inputId).value;
-            console.log(newName);
             category["name"] = newName;
             const json = JSON.stringify(category);
-            console.log(json);
             fetch("https://localhost:7233/ModifyCategory", {
                 method: 'PUT',
                 headers: { /*'Accept': 'application/json',*/ 'Content-Type': 'application/json' },
@@ -184,7 +178,6 @@
         }
 
         function Delete(categoryId, boxId, lang) {
-            console.log("Mitä kuuluu kukkuluuruu, lähekkö nää pois?", categoryId, boxId);
             if (!document.getElementById(boxId).checked) {
                 return;
             }
@@ -204,7 +197,6 @@
                 }
             });
         }
-
     </script>
 </body>
 </html>

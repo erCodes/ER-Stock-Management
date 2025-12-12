@@ -94,33 +94,22 @@
             document.getElementById("supervisorLabel").innerHTML = Translation("Supervisor", lang);
             document.getElementById("phoneLabel").innerHTML = Translation("Phone", lang);
             document.getElementById("emailLabel").innerHTML = Translation("Email", lang);
-
             document.getElementById("modifyStoreInfo").innerHTML = Translation("ModifyStoreInfo", lang);
             document.getElementById("deleteStore").innerHTML = Translation("DeleteStore", lang);
             document.getElementById("viewProductsButton").innerHTML = Translation("ViewProductsButton", lang);
 
-
-            console.log(storeId);
             await GetStoreInfo(storeId);
             let storeData = JSON.parse(localStorage.getItem("StoreAndProducts"));
-
-            console.log(storeData);
             let productNames = [];
             let productCount = [];
 
             let products = Array.from(storeData['products']);
-            console.log(products);
 
             for (const product of products) {
-                console.log(product);
-                console.log(product["name"]);
-                console.log(product["inStock"]);
                 productNames.push(product["name"]);
                 productCount.push(product["inStock"]);
             }
 
-            console.log(productNames);
-            console.log(productCount);
             ProductChart(productNames, productCount, Translation("ProductChart", lang));
         }
 
@@ -136,7 +125,6 @@
                     return data.json();
                 })
                 .then(data => {
-                    console.log(data)
                     if (!data) {
                         document.getElementById('Message').innerHTML = Translation("ErrorMessage", lang);
                         throw new Error("Promise chain cancelled");
@@ -150,7 +138,6 @@
                         document.getElementById('Email').innerHTML = data["email"];
                         localStorage.setItem("StoreAndProducts", JSON.stringify(data));
                     }
-
                 })
                 .catch((error) => {
                     console.error(error)
@@ -192,10 +179,6 @@
 
         let chart1 = null;
         function ProductChart(productNames, productCount, title) {
-            console.log(productNames);
-            console.log(productCount);
-            console.log(title);
-
             // Colors for the chart.
             var colors = [];
             while (colors.length < productNames.length) {
@@ -204,7 +187,6 @@
                 } while (colors.indexOf(color) >= 0);
                 colors.push("#" + ("000000" + color.toString(16)).slice(-6));
             }
-            console.log(colors);
 
             // Chart
             let myChart1 = document.getElementById('myChart1').getContext('2d');

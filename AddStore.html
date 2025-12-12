@@ -100,7 +100,6 @@
 
             document.addEventListener('DOMContentLoaded', function () {
                 const lang = localStorage.getItem("Lang");
-
                 document.getElementById("addNewStoreTitle").innerHTML = Translation("AddNewStoreTitle", lang);
                 document.getElementById("mainPage").innerHTML = Translation("MainPage", lang);
                 document.getElementById("nameLabel").innerHTML = Translation("Name", lang);
@@ -119,9 +118,7 @@
 
             async function AddStore(lang) {
                 const formData = new FormData(form);
-
                 const jsonData = JSON.stringify(Object.fromEntries(formData));
-                console.log(jsonData);
 
                 await fetch('https://localhost:7233/NewStore', {
                     method: 'POST',

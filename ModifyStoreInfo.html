@@ -108,7 +108,6 @@
 
         async function RenderPage() {
             const storeData = JSON.parse(localStorage.getItem('StoreAndProducts'));
-            console.log(storeData);
             lang = localStorage.getItem("Lang");
 
             document.getElementById("mainPage").innerHTML = Translation("MainPage", lang);
@@ -138,9 +137,7 @@
 
         async function ModifyStore() {
             const formData = new FormData(form);
-
             const jsonData = JSON.stringify(Object.fromEntries(formData));
-            console.log(jsonData);
 
             await fetch('https://localhost:7233/ModifyStore', {
                 method: 'PUT',
