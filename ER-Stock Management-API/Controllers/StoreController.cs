@@ -85,6 +85,10 @@ namespace ER_Stock_Management_API.Controllers
             {
                 return Ok();
             }
+            else if (result.StatusCode == Status.BadRequest)
+            {
+                return BadRequest();
+            }
             else if (result.StatusCode == Status.NotFound)
             {
                 return NotFound();

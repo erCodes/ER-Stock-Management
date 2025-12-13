@@ -87,7 +87,28 @@ namespace ER_Stock_Management_Tests.API_Tests
 
             if (status == Status.OK)
             {
-                Assert.That(result, Is.TypeOf<OkObjectResult>());
+                Assert.That(result, Is.TypeOf<OkResult>());
+            }
+            else if (status == Status.BadRequest)
+            {
+                Assert.That(result, Is.TypeOf<BadRequestResult>());
+            }
+        }
+
+        [TestCase(Status.OK)]
+        [TestCase(Status.NotFound)]
+        public void DeleteCategory(Status status)
+        {
+            Delete.Setup(x => x.DeleteCategory("1")).Returns(new Result(status));
+
+            var controller = Create();
+            var result = controller.DeleteCategory("1");
+            Repository.VerifyAll();
+            Assert.That(result, Is.Not.Null);
+
+            if (status == Status.OK)
+            {
+                Assert.That(result, Is.TypeOf<OkResult>());
             }
             else if (status == Status.NotFound)
             {
