@@ -46,7 +46,7 @@
             <tbody id="table">
                 <tr>
                     <td>
-                        <input type="button" id="newProductButton" name="NewProduct" value="New" class="btn btn-primary" onclick="NewProduct()" />
+                        <input type="button" id="newProductButton" style="margin-right: 10px" name="NewProduct" value="New" class="btn btn-primary" onclick="NewProduct()" />
                         <input type="text" id="NewName" maxlength="50">
                     </td>
                     <td><input type="text" id="NewAmount"></td>
@@ -113,6 +113,8 @@
             const modifyButton = document.createElement('button');
             modifyButton.type = 'button';
             modifyButton.className = 'btn btn-primary';
+            modifyButton.style.marginLeft = "10px";
+            modifyButton.style.marginRight = "10px";
             modifyButton.innerHTML = Translation("Modify", lang);
             modifyButton.onclick = () => { ModifyProduct(storeId, element, index) };
             modifyCell.appendChild(modifyButton);
@@ -141,6 +143,8 @@
                     var catLabel = document.createElement("label");
                     catLabel.setAttribute("for", counter);
                     catLabel.textContent = entry['name'];
+                    catLabel.style.paddingLeft = "10px"
+                    catLabel.style.paddingRight = "2px"
                     categoryCell.appendChild(catLabel);
 
                     var catCheckbox = document.createElement("input");
@@ -181,6 +185,8 @@
                 const catId = 'NewCat' + newCatCounter;
                 catLabel.setAttribute("for", catId);
                 catLabel.textContent = entry['name'];
+                catLabel.style.paddingLeft = "10px"
+                catLabel.style.paddingRight = "2px"
                 newCategories.appendChild(catLabel);
 
                 var catCheckbox = document.createElement("input");
@@ -296,8 +302,6 @@
             }
 
             const json = JSON.stringify(jsonObject);
-
-            //let queryString = new URLSearchParams(jsonObject).toString();
             const url = "https://localhost:7233/ModifyProduct";
 
             fetch(url, {

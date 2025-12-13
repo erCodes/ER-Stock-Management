@@ -131,7 +131,6 @@
             deleteCheckbox.className = "form-check-input";
             deleteCheckbox.id = boxId;
             deleteLabel.appendChild(deleteCheckbox);
-            
 
             var deleteButton = document.createElement("input");
             deleteButton.type = "button";
@@ -167,7 +166,7 @@
             const json = JSON.stringify(category);
             fetch("https://localhost:7233/ModifyCategory", {
                 method: 'PUT',
-                headers: { /*'Accept': 'application/json',*/ 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json' },
                 body: json
             }).then(response => {
                 if (response.ok) {

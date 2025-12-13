@@ -1,5 +1,4 @@
-﻿/*Refactor path part*/
-function Redirect(file, parameterKey = null, parameterValue = null) {
+﻿function Redirect(file, parameterKey = null, parameterValue = null) {
     let href = window.location.href;
     let path = href.substring(0, href.lastIndexOf('/')) + "/";
     let page = path.concat(file)
@@ -61,7 +60,7 @@ function Translation(key, lang) {
     // Index
     en.set("AddStore", "Add store");
     en.set("ProductCategories", "Product Categories");
-    en.set("StoresText", "Select Store to view its products");
+    en.set("StoresText", "Select Store to view its products or add new");
     en.set("StoresTextNotFound", "No stores found. Add new one to continue.");
     // ProductCategories
     en.set("MainPage", "Main page")
@@ -142,7 +141,6 @@ function Translation(key, lang) {
     fi.set("AmountInStock", "Määrä");
     // Modify Store Info
     fi.set("StoreModified", "Kaupan tiedot on muutettu");
-
 
     if (lang == "en") {
         const enTranslation = en.get(key);

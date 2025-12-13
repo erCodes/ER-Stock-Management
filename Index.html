@@ -46,15 +46,12 @@
         </div>
     </div>
 
-
-
     <script type="text/javascript" charset="utf-8">
         let stores = null;
 
         window.addEventListener('DOMContentLoaded', () => RenderPage(), false);
 
         async function RenderPage() {
-            //localStorage.clear();
             if (!localStorage.getItem("Lang")) {
                 await ReadLanguage();
             }
@@ -86,6 +83,7 @@
             var button1 = document.createElement('button');
             button1.type = 'button';
             button1.className = 'btn btn-primary';
+            button1.style.marginRight = "10px"
             button1.value = item.name;
             button1.innerHTML = item.name;
 
