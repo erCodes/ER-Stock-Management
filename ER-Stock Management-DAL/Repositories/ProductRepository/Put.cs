@@ -49,7 +49,6 @@ namespace ER_Stock_Management_DAL.Repositories.ProductRepository
                 product.InStock = int.Parse(dto.InStock);
                 product.Timestamp = DateTime.UtcNow;
 
-                // Tarkista tarvitaanko tätä
                 int index = store.Products.FindIndex(x => x.Id == dto.ProductId);
 
                 store.Products[index] = product;

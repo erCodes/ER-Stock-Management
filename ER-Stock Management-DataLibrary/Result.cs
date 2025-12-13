@@ -21,6 +21,5 @@ namespace ER_Stock_Management_DataLibrary
 
         public required Status StatusCode { get; set; } = statusCode;
         public object? Data { get; set; } = data;
-        //public HttpStatusCode Code { get; set; }
     }
 }
