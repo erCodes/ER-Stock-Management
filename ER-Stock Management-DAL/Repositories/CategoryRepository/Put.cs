@@ -16,6 +16,11 @@ namespace ER_Stock_Management_DAL.Repositories.CategoryRepository
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(category.Name))
+                {
+                    return new Result(Status.BadRequest);
+                }
+
                 var exists = Db.ProductCategories.FirstOrDefault(x => x.Id == category.Id);
                 if (exists == null)
                 {
