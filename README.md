@@ -2,6 +2,10 @@
 
 ER-Stock-Management is my full stack project for managing products and categorizing them in the supermarket.
 
+##### Table of Contents  
+[Headers](#headers)  
+[Emphasis](#emphasis)  
+
 Project contains:
 ### Frontend files
 - Frontend functionalities are coded with JavaScript with no frameworks. It is designed to be as light as possible.
