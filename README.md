@@ -57,4 +57,13 @@ There is also darkmode image (moon). Click it to change to darkmode or back to l
 - If you delete category, it is removed from every products category id list. No "ghost data".
 
 ## Languages and frameworks used
-
+### Frontend
+- JavaScript, Chart.Js, Bootstrap, basic HTML and CSS
+### ER-Stock-Management-API
+- ASP.NET Core Web API (.net 8.0, C#)
+### ER-Stock-Management-DAL
+- Microsoft EntityFrameworkCore (.net 8.0, C#), Microsoft SQL Server
+### ER-Stock-Management-DataLibrary
+- Common .NET class library (.net 8.0)
+### ER-Stock-Management-Tests
+- .Net Framework (8.0), NUnit unit testing, Moq
