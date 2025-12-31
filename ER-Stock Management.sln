@@ -28,7 +28,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ER-Stock Management-Tests",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JS", "JS", "{86BCF5DC-3901-41DD-AD36-1FFDD43F5890}"
 	ProjectSection(SolutionItems) = preProject
+		AddStore.js = AddStore.js
+		BrowseStore.js = BrowseStore.js
 		CommonFunctions.js = CommonFunctions.js
+		Index.js = Index.js
+		ModifyStoreInfo.js = ModifyStoreInfo.js
+		ProductCategories.js = ProductCategories.js
+		ViewProducts.js = ViewProducts.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{6C539A5D-038B-4932-AFF5-FD045C1C62BB}"
