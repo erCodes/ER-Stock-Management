@@ -13,10 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ER-Stock Management-UI", "E
 	ProjectSection(SolutionItems) = preProject
 		AddStore.html = AddStore.html
 		BrowseStore.html = BrowseStore.html
-		CommonFunctions.js = CommonFunctions.js
-		dark.png = dark.png
-		fi.png = fi.png
-		gb.png = gb.png
 		Index.html = Index.html
 		ModifyStoreInfo.html = ModifyStoreInfo.html
 		ProductCategories.html = ProductCategories.html
@@ -29,6 +25,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSS", "CSS", "{2B3EF2BE-6A7
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ER-Stock Management-Tests", "ER-Stock Management-Tests\ER-Stock Management-Tests.csproj", "{6E0513D6-3455-4477-8AAC-A41A97B934E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JS", "JS", "{86BCF5DC-3901-41DD-AD36-1FFDD43F5890}"
+	ProjectSection(SolutionItems) = preProject
+		CommonFunctions.js = CommonFunctions.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{6C539A5D-038B-4932-AFF5-FD045C1C62BB}"
+	ProjectSection(SolutionItems) = preProject
+		dark.png = dark.png
+		fi.png = fi.png
+		gb.png = gb.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +66,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2B3EF2BE-6A70-4AAE-BB7E-62B70D5158ED} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{86BCF5DC-3901-41DD-AD36-1FFDD43F5890} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{6C539A5D-038B-4932-AFF5-FD045C1C62BB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4BE4450-CD3E-4208-B05F-45AB3B117500}
